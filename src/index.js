@@ -5,6 +5,8 @@ import registerServiceWorker from "./registerServiceWorker";
 import { createStore, compose, applyMiddleware, combineReducers } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
+import Test from "./Test"
+
 
 import authReducer from "./store/reducers/auth";
 
@@ -18,7 +20,7 @@ const store = createStore(rootReducer, composeEnhances(applyMiddleware(thunk)));
 
 const app = (
   <Provider store={store}>
-    <App />
+   <Test/>
   </Provider>
 );
 

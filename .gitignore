@@ -1,6 +1,11 @@
 # Created by https://www.toptal.com/developers/gitignore/api/react,django
 # Edit at https://www.toptal.com/developers/gitignore?templates=react,django
 
+
+# Vscode
+.vscode
+
+
 ### Django ###
 *.log
 *.pot
@@ -113,6 +118,7 @@ celerybeat.pid
 
 # Environments
 .robo
+robo-react/
 .venv
 robo/
 venv/

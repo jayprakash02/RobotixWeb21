@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
+import api from '..service';
 
 export const authStart = () => {
   return {
@@ -41,7 +42,7 @@ export const authLogin = (username, password) => {
   return dispatch => {
     dispatch(authStart());
     axios
-      .post("http://127.0.0.1:8000/rest-auth/login/", {
+      .post("/rest-auth/login/", {
         username: username,
         password: password
       })

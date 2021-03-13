@@ -19,7 +19,7 @@ SECRET_KEY = 'o!m3w+(x3q3_c9*bpe))v%5=8w_)&o_s4b*z=p-ij(#*^v%vob'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*','192.168.43.159']
 
 
 # Application definition
@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'rest_framework',
     'rest_framework.authtoken',
-    'check',
 ]
 
 MIDDLEWARE = [

@@ -83,6 +83,7 @@ WSGI_APPLICATION = 'RobotixWeb.wsgi.application'
 if DEBUG:
     CORS_ORIGIN_WHITELIST = (
         'http://localhost:3000',
+        'http://192.168.43.159:3000',
     )
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

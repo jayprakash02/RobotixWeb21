@@ -1,17 +1,11 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-
-from . models import Convenor,Coordinator,HeadCoordinator,Manager
-# Register your models here.
-# admin.site.register(Convenor)
-# admin.site.register(Coordinator)
-# admin.site.register(HeadCoordinator)
-# admin.site.register(Manager)
-
+from . models import Convenor, Coordinator, HeadCoordinator, Manager
 
 @admin.register(Convenor)
 class ConvenorAdmin(ImportExportModelAdmin):
     pass
+
 
 @admin.register(Coordinator)
 class ContactAdmin(ImportExportModelAdmin):

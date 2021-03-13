@@ -8,8 +8,8 @@ from .models import portalUser, Team,problem_statement
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import viewsets
-from .serializers import portalUserSerializer, teamserializer,RobothonSerializer
-from users.models import UserProfile
+from .serializ  ers import portalUserSerializer, teamserializer,RobothonSerializer
+from apps.users.models import UserProfile
 from django.template.loader import render_to_string
 from django.contrib import messages
 

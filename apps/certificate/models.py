@@ -2,7 +2,7 @@
 from django.db import models
 import uuid
 from django.core.files import File
-from events.models import Event
+from apps.events.models import Event
 #signals
 from django.dispatch import receiver
 from django.db.models.signals import post_save,post_delete
@@ -18,8 +18,8 @@ import tempfile
 from django.core import files
 import os
 
-
 # Create your models here.
+
 class Certificate(models.Model):
     event = models.ForeignKey(Event,on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
@@ -31,6 +31,7 @@ class Certificate(models.Model):
 
     def __str__(self):
         return self.name + " certificate for event " + self.event.title
+
 
 @receiver(post_delete, sender=Certificate)
 def auto_delete_file_on_delete(sender, instance, **kwargs):

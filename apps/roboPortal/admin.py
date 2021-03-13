@@ -14,10 +14,3 @@ class TeamAdmin(ImportExportModelAdmin):
 @admin.register(problem_statement)
 class problem_statementAdmin(ImportExportModelAdmin):
     pass
-
-
-# Register your models here.
-# admin.site.register(portalUser)
-# admin.site.register(problem_statement)
-# admin.site.register(Token)
-# admin.site.register(Team)

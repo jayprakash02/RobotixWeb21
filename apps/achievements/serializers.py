@@ -7,6 +7,7 @@ class AchievementSerializer(serializers.ModelSerializer):
         model = Achievements
         fields = '__all__'
 
+
 class AchievementViewSet(viewsets.ModelViewSet):
     queryset = Achievements.objects.all()
     serializer_class = AchievementSerializer

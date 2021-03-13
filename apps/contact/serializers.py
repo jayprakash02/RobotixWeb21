@@ -1,4 +1,4 @@
-from rest_framework import serializers,viewsets
+from rest_framework import serializers, viewsets
 from .models import Contact
 
 
@@ -7,6 +7,8 @@ class ContactSerializer(serializers.ModelSerializer):
         model = Contact
         fields = "__all__"
 
+
 class ContactViewset(viewsets.ModelViewSet):
     queryset=Contact.objects.all()
     serializer_class=ContactSerializer
+    

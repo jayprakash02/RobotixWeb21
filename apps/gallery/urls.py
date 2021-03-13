@@ -1,7 +1,11 @@
+from django.urls import path, include
+from rest_framework import routers
+from .serializers import *
 
-from django.urls import path
-from . import views
+
+router = routers.DefaultRouter()
+router.register(r'gallery', GalleryViewSet)
+
 urlpatterns = [
-    path('',views.gallery,name='gallery'),
-    path('api/',views.gallery_api,name='gallery_api')
+    path('', include(router.urls)),
 ]

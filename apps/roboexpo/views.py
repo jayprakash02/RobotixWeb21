@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404,redirect
 from django.core.mail import send_mail
 from .models import Roboexpo
-from users.models import UserProfile
+from apps.users.models import UserProfile
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from roboPortal.models import portalUser
+from apps.roboPortal.models import portalUser
 # Create your views here.
 
 def checked(name):

@@ -1,6 +1,7 @@
 from django.db import models
 
 # Create your models here.
+
 class Gallery(models.Model):
     photo = models.ImageField(upload_to='img/gallery')
     title = models.CharField(max_length=50)

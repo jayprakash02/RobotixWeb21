@@ -50,6 +50,11 @@ INSTALLED_APPS = [
     'contact',
     'events',
     'extras',
+    'gallery',
+    'roboexpo',
+    'roboPortal',
+    'users',
+    'workshops',
 ]
 
 MIDDLEWARE = [

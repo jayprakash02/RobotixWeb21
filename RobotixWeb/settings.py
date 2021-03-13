@@ -42,8 +42,14 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'rest_framework',
     'rest_framework.authtoken',
+    'import_export',
 
     "about",
+    'achievements',
+    'certificate',
+    'contact',
+    'events',
+    'extras',
 ]
 
 MIDDLEWARE = [

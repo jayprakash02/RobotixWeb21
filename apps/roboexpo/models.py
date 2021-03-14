@@ -8,11 +8,11 @@ User = settings.AUTH_USER_MODEL
 class Roboexpo(models.Model):
     team_name = models.CharField(max_length=150)
     email = models.EmailField()
-    team_mates = models.ManyToManyField(User, related_name= "team_mates", null=True)
-    selected = models.NullBooleanField(null=True)
+    team_mates = models.ManyToManyField(User, related_name= "team_mates")
+    selected = models.BooleanField(null=True)
     bid = models.IntegerField(default=0)
     mail_delivered = models.BooleanField(default=False)
-    abstract = models.FileField(upload_to='docs/roboexpo/abstracts')
+    abstract = models.FileField(upload_to='docs/roboexpo/abstracts',null=True)
 
     def __str__(self):
         return self.team_name

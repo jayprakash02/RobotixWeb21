@@ -1,4 +1,4 @@
-from apps.roboexpo.serializers import RoboexpoViewSet
+from .serializers import RoboexpoViewSet
 from django.urls import path, include
 from rest_framework import routers
 # from . import views

@@ -4,7 +4,7 @@ from rest_framework import routers
 # from . import views
 from .serializers import PortalUserViewSet, TeamViewSet, RobothonViewSet 
 
-app_name = 'robothon'
+
 
 router = routers.DefaultRouter()
 router.register(r'portaluser', PortalUserViewSet)

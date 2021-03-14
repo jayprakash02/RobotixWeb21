@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import UserProfile
 from allauth.account.adapter import get_adapter
 from rest_auth.registration import serializers as RegisterSerializer
-from apps.roboPortal.models import portalUser
+from roboPortal.models import portalUser
 
 ## All the following is left to change again @jay 
 class UserProfileSerializer(serializers.ModelSerializer, RegisterSerializer.RegisterSerializer):

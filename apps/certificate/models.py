@@ -2,7 +2,7 @@
 from django.db import models
 import uuid
 from django.core.files import File
-from apps.events.models import Event
+from events.models import Event
 #signals
 from django.dispatch import receiver
 from django.db.models.signals import post_save,post_delete

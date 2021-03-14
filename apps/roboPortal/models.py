@@ -5,7 +5,7 @@ from django.conf import settings
 User = settings.AUTH_USER_MODEL
 
 
-class PortalUser(models.Model):
+class portalUser(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,related_name="portal",on_delete= models.CASCADE)
     is_complete = models.BooleanField(default= False)
     college = models.CharField(max_length= 150, null= True, blank= True)

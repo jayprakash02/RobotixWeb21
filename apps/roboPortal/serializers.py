@@ -2,8 +2,8 @@ from rest_framework import serializers, viewsets
 from .models import portalUser,Team
 from allauth.account.adapter import get_adapter
 from rest_auth.registration import serializers as RegisterSerializer
-from apps.roboPortal.models import PortalUser, Team, Robothon
-from apps.users.serializers import UserProfileSerializer, UserDetailsTeamSerializer
+from roboPortal.models import portalUser, Team, Robothon
+from users.serializers import UserProfileSerializer, UserDetailsTeamSerializer
 
 
 
@@ -34,7 +34,7 @@ class RobothonSerializer(serializers.ModelSerializer):
 
 
 class PortalUserViewSet(viewsets.ModelViewSet):
-    queryset = PortalUser.objects.all()
+    queryset = portalUser.objects.all()
     serializer_class = PortalUserSerializer
 
 

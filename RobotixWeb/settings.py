@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'import_export',
 
+    #apps
     "about",
     'achievements',
     'certificate',
@@ -99,12 +100,26 @@ if DEBUG:
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            }
+        }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'robotixdb3',
+            'USER': 'robot',
+            'PASSWORD' :'django',
+            'HOST' : 'localhost',
+            'PORT' : ''
+
+        }
+
     }
-}
 
 
 # Password validation
@@ -131,7 +146,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -148,9 +163,11 @@ MEDIA_URL = '/media/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'build/static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-SITE_ID = 1
 
 #drf
+REST_AUTH_SERIALIZERS = {
+    "USER_DETAILS_SERIALIZER": "users.serializers.UserDetailsSerializer",
+}
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
@@ -159,3 +176,37 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
 }
+
+
+#auth
+
+ACCOUNT_ADAPTER = 'users.adapter.CustomAccountAdapter'
+AUTH_USER_MODEL = 'users.UserProfile'
+
+SITE_ID = 1
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+OLD_PASSWORD_FIELD_ENABLED = True
+LOGOUT_ON_PASSWORD_CHANGE = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+#email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+
+if DEBUG:
+    EMAIL_HOST_USER = 'wandavision5432@gmail.com'
+else :
+    EMAIL_HOST_USER = 'robotixclub@nitrr.ac.in'
+    #EMAIL_HOST_USER = 'wandavision5432@gmail.com'
+
+EMAIL_HOST_PASSWORD = 'Nitrrobots16'
+
+# EMAIL_HOST = 'localhost'
+# EMAIL_PORT = 1025
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+LOGOUT_REDIRECT_URL = '/'

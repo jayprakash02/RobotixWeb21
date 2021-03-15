@@ -1,32 +1,20 @@
-from django.conf.urls import url
-from django.db.models.signals import post_delete
-from django.shortcuts import redirect, render,HttpResponse
 from django.shortcuts import get_object_or_404
-from django.urls.exceptions import NoReverseMatch
 from .models import Certificate
-from .forms import CertificateForm
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .serializers import CertificateSerializer
 
 
-def Search(request,url_key=None):
-    try:
-        if url_key != None:
+class CertificateView(APIView):
+    def get(self,request,*args, **kwargs):
+        pass
 
-            obj = get_object_or_404(Certificate,url_key=url_key)
-            if request.method == 'POST':
-                # form = CertificateForm(request.POST)
-                url_key = request.POST.get('url_key')
-                return redirect('certificate:search', url_key=url_key)
-
-            return render(request, "certificate/certificate.html", {'certificate':obj})
-
-        elif request.method == 'POST':
-            # form = CertificateForm(request.POST)
-            url_key = request.POST.get('url_key')
-            return redirect('certificate:search', url_key=url_key,)
-
-        else:
-            return render(request, "certificate/certificate.html")
-
-    except NoReverseMatch:
-        request_obj = True     ## This is for Invalid sign that pops up if the id is invalid
-        return render(request, "certificate/certificate.html", {'request_obj':request_obj},)
+    def post(self,request,*args, **kwargs):
+        url_key = request.POST.get('url_key')
+        obj = get_object_or_404(Certificate,url_key=url_key)
+        event = str(obj.event.title)
+        name = str(obj.name)
+        image = str(obj.image.url)
+        dict ={'name':name,'image':image,'event':event}
+        return Response(dict)

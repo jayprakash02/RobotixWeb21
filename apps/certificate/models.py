@@ -21,7 +21,7 @@ import os
 # Create your models here.
 
 class Certificate(models.Model):
-    event = models.ForeignKey(Event,on_delete=models.CASCADE)
+    event = models.ForeignKey(Event,related_name='events',on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     url_key = models.UUIDField(default=uuid.uuid4,unique=True, blank=True,  null=True)
     image = models.ImageField(upload_to='certificate/',null=True,blank=True)

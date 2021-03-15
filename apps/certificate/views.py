@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.http import Http404
 from .models import Certificate
 
 from rest_framework.views import APIView
@@ -12,9 +13,12 @@ class CertificateView(APIView):
 
     def post(self,request,*args, **kwargs):
         url_key = request.POST.get('url_key')
-        obj = get_object_or_404(Certificate,url_key=url_key)
-        event = str(obj.event.title)
-        name = str(obj.name)
-        image = str(obj.image.url)
-        dict ={'name':name,'image':image,'event':event}
+        try:
+            obj = get_object_or_404(Certificate,url_key=url_key)
+            event = str(obj.event.title)
+            name = str(obj.name)
+            image = str(obj.image.url)
+            dict ={'name':name,'image':image,'event':event}
+        except Http404:
+            dict ={'error':'NOT FOUND'}
         return Response(dict)

@@ -1,21 +1,10 @@
 #models
 from django.db import models
 import uuid
-from django.core.files import File
 from events.models import Event
 #signals
 from django.dispatch import receiver
-from django.db.models.signals import post_save,post_delete
-from import_export.signals import post_import, post_export
-#emalis
-from django.core.mail import EmailMultiAlternatives
-from django.conf import settings
-#PIL
-from PIL import Image, ImageDraw
-#utill
-import requests
-import tempfile
-from django.core import files
+from django.db.models.signals import post_delete
 import os
 
 # Create your models here.

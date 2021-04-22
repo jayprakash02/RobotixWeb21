@@ -1,6 +1,6 @@
 branch-defaults:
   main:
-    environment: production
+    environment: RobotixWeb21
 global:
   application_name: RobotixWeb21
   branch: null

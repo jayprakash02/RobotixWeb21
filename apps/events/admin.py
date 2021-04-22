@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from . models import Event, Workshop
+from . models import *
 
 # Register your models here.
 
@@ -8,7 +8,10 @@ from . models import Event, Workshop
 class EventAdmin(ImportExportModelAdmin):
     pass
 
-@admin.register(Workshop)
-class WorkshopAdmin(ImportExportModelAdmin):
+@admin.register(Team)
+class TeamAdmin(ImportExportModelAdmin):
     pass
-    
+
+@admin.register(CertImage)
+class CertImageAdmin(ImportExportModelAdmin):
+    pass

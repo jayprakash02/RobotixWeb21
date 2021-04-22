@@ -1,27 +1,16 @@
 #models
 from django.db import models
 import uuid
-from django.core.files import File
 from events.models import Event
 #signals
 from django.dispatch import receiver
-from django.db.models.signals import post_save,post_delete
-from import_export.signals import post_import, post_export
-#emalis
-from django.core.mail import EmailMultiAlternatives
-from django.conf import settings
-#PIL
-from PIL import Image, ImageDraw
-#utill
-import requests
-import tempfile
-from django.core import files
+from django.db.models.signals import post_delete
 import os
 
 # Create your models here.
 
 class Certificate(models.Model):
-    event = models.ForeignKey(Event,on_delete=models.CASCADE)
+    event = models.ForeignKey(Event,related_name='events',on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
     url_key = models.UUIDField(default=uuid.uuid4,unique=True, blank=True,  null=True)
     image = models.ImageField(upload_to='certificate/',null=True,blank=True)

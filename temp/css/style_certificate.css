@@ -244,3 +244,23 @@ visibility: visible;
   left:100%;
 }
 }
+.aboutcont{
+margin:100px;}
+@media screen and (max-width:500px){.aboutcont{margin:20px;}}
+  .squares.square8 {
+    animation: move-left-right 6s infinite;
+    height: 200px;
+    width: 200px;
+    opacity: 0.4;
+    right: -3%;
+    top: 2%;
+    overflow: hidden;
+  }
+  .squares.square9 {
+    animation: move-left-right 10s infinite;
+    height: 80px;
+    width: 80px;
+    opacity: 0.5;
+    right: 50%;
+    top: 85%;
+  }

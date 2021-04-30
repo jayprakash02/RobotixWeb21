@@ -12,7 +12,7 @@ class PortalUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = portalUser
-        fields = ('user','resume','description','joined_team')
+        fields = ('user','joined_team')
 
 
 class Teamserializer(serializers.ModelSerializer):

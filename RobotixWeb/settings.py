@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'import_export',
+    'django_celery_beat',
+    'django_celery_results',
 
     #apps
     "about",
@@ -210,3 +212,6 @@ EMAIL_HOST_PASSWORD = 'Nitrrobots16'
 # EMAIL_PORT = 1025
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 LOGOUT_REDIRECT_URL = '/'
+
+#celery
+CELERY_RESULT_BACKEND = "django-db"

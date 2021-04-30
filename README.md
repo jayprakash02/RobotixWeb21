@@ -1,30 +1,21 @@
 # Robotix Web 2.O
 
-This repository contains a boilerplate project setup for Django and React.
-
+This repository contains a backkend of [Robotix Club NITRR Website](https://robotix.nitrr.ac.in).
 ## Backend development workflow
 
+### Installation
 ```
-virtualenv env
-source env/bin/activate
+python -m venv robo
+source robo/bin/activate
 pip install -r requirements.txt
 python manage.py runserver
 ```
-
-## Frontend development workflow
-
+### Migrations
 ```
-npm i
-npm start
+python manage.py makemigrations
+python manage.py migrate
 ```
-
-## For deploying
-
+### Start Server
 ```
-npm run build
-```
-## Requirements
-```
-Django==3+
-Python==3+
+python manage.py runserver
 ```

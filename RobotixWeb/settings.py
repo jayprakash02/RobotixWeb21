@@ -19,7 +19,7 @@ SECRET_KEY = 'o!m3w+(x3q3_c9*bpe))v%5=8w_)&o_s4b*z=p-ij(#*^v%vob'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','RobotixWeb21.eba-z36dg4bc.us-west-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'import_export',
+    'django_celery_beat',
+    'django_celery_results',
+    'rest_framework_swagger',
 
     #apps
     "about",
@@ -175,6 +178,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
 
 
@@ -210,3 +214,6 @@ EMAIL_HOST_PASSWORD = 'Nitrrobots16'
 # EMAIL_PORT = 1025
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 LOGOUT_REDIRECT_URL = '/'
+
+#celery
+CELERY_RESULT_BACKEND = "django-db"

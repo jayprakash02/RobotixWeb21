@@ -5,7 +5,7 @@ from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('api/api-auth/', include('rest_framework.urls')),
+    path('api-auth/', include('rest_framework.urls')),
     path('api/rest-auth/', include('rest_auth.urls')),
     path('api/rest-auth/registration/', include('rest_auth.registration.urls')),
     path('admin/', admin.site.urls),
@@ -23,8 +23,4 @@ urlpatterns = [
     path('api/users/', include('users.urls'), name="users"),
     path('api/workshops/', include('roboPortal.urls'), name="roboPortal"),
 
-
-
-    # re_path(r'^.*', TemplateView.as_view(template_name='index.html')),
-    path('', TemplateView.as_view(template_name='index.html')),
 ]

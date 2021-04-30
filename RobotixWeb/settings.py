@@ -19,7 +19,7 @@ SECRET_KEY = 'o!m3w+(x3q3_c9*bpe))v%5=8w_)&o_s4b*z=p-ij(#*^v%vob'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','RobotixWeb21.eba-z36dg4bc.us-west-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition

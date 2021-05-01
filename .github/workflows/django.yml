@@ -2,7 +2,7 @@ name: Django CI
 
 on:
   push:
-    branches: [ master,develop ]
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -26,5 +26,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run Tests
+      env:
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+        EMAIL_HOST_PASSWORD: ${{ secrets.Nitrrobots16 }}
       run: |
         python manage.py check

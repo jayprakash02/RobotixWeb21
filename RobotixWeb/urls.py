@@ -4,12 +4,16 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from rest_framework_swagger.views import get_swagger_view
+from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
 
 schema_view = get_swagger_view(title='Robotix Club Web2 API')
 
 urlpatterns = [
     re_path(r'^$',schema_view,name="documentationn"),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     path('rest-auth/', include('rest_auth.urls')),
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('admin/', admin.site.urls),

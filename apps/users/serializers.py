@@ -1,67 +1,142 @@
 from rest_framework import serializers
-from .models import UserProfile
-from allauth.account.adapter import get_adapter
-from rest_auth.registration import serializers as RegisterSerializer
-from roboPortal.models import portalUser
+from django.contrib import auth
 
-## All the following is left to change again @jay 
-class UserProfileSerializer(serializers.ModelSerializer, RegisterSerializer.RegisterSerializer):
+from .models import CustomUser
 
-    password1 = serializers.CharField(write_only=True)
-    extra_kwargs = {
-        'password1' : {
-            'write_only':True,
-            'style':{'input_type':'password'}
-        }
-    }
 
-    class Meta:
-        model = UserProfile
-        fields = ('email','name','phone_no','password','password1')
-        extra_kwargs = {
-            'password' : {
-                'write_only':True,
-                'style':{'input_type':'password'}
-            },
-            'password1' : {
-                'write_only':True,
-                'style':{'input_type':'password'}
-            }
-        }
-
-    def validate(self, data):
-        if data['password'] != data['password1']:
-            raise serializers.ValidationError(("The two password fields didn't match."))
-        return data
-
+class CustomUserSerializer(serializers.ModelSerializer):
+    
     def create(self,validated_data):
-        user = UserProfile.objects.create_user(
-            email = validated_data.get('email'),
-            name = validated_data.get('name'),
-            phone_no = validated_data.get('phone_no'),
-            password = validated_data.get('password')
-        )
-        a= portalUser(user = user)
-        a.save()
-        return user
+        return CustomUser.objects.create(**validated_data)
 
-    def get_cleaned_data(self):
-        data_dict = super().get_cleaned_data()
-        data_dict['name'] = self.validated_data.get('name')
-        data_dict['phone_no'] = self.validated_data.get('phone_no')
-        return data_dict
-
-class UserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserProfile
-        # fields = '__all__'
-        fields = ('id','email','name','phone_no')
-        read_only_fields = ('email',)
+        model = CustomUser
+        exclude = ('id','user_id','last_login','is_staff','is_admin','is_active','email_verified','mobile_verified' )
+        depth = 1
 
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        max_length=68, min_length=8, write_only=True)
 
-class UserDetailsTeamSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserProfile
-        # fields = '__all__'
-        fields = ('name',)
-        read_only_fields = ('name',)
+        model = CustomUser
+        fields = ['email', 'username', 'phone_number', 'password']
+
+    def create(self, validated_data):
+        return CustomUser.objects.create_user(**validated_data)
+
+class LoginSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(max_length=255,min_length=3,allow_blank=True)
+    password = serializers.CharField(max_length=68, min_length=6, write_only=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ['user_id','email', 'password', 'tokens']
+
+    def validate(self,attrs):
+        email = attrs['email']
+        password = attrs['password']
+
+        try:
+            filtered_user_by_email = CustomUser.objects.get(email__iexact=email)
+            if filtered_user_by_email:
+                raise AuthenticationFailed(
+                    detail='You are allready register!! Please Login or Reset Your Password'
+                    )
+        except:
+            print("User does not exist.")
+
+        user = auth.authenticate(email=email, password=password)
+
+        if not user:
+            raise AuthenticationFailed('Invalid credentials, try again')
+        if not user.is_active:
+            raise AuthenticationFailed('Account disabled, contact admin')
+        if not user.email_verified:
+            raise AuthenticationFailed('Email is not verified')
+        
+        return {
+            'user_id' : user.user_id,
+            'email' : user.email,
+            'tokens' : user.tokens()
+        }
+
+class PhoneLoginSerializer(serializers.ModelSerializer):
+    phone_number = serializers.RegexField('^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$', max_length=15)
+
+    class Meta:
+        model = CustomUser
+        fields = ['phone_number', 'user_id', 'tokens']
+
+    def validate(self, attrs):
+        phone_number = attrs['phone_number']
+        try:
+            user_obj = CustomUser.objects.get(phone_number__icontains=phone_number)
+            if user_obj:
+                #send OTP
+                #validate OTP
+                return {
+                    'user_id' : user_obj.user_id,
+                    'phone_number' : user_obj.phone_number,
+                    'tokens' : user_obj.tokens() 
+                }
+        except:
+            raise serializers.ValidationError({
+                'error': 'User does not exists.'
+            })        
+        return super().validate(attrs)
+
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+
+    def validate(self, attrs):
+        self.tokenRefresh = attrs['refresh']
+        return attrs
+
+    def save(self, **kwargs):
+
+        default_error_message = {
+            'bad_token': ('Token is expired or invalid')
+        }
+
+        try:
+            RefreshToken(self.tokenRefresh).blacklist()
+            return {
+                'success' : 'Logged Out'
+            }
+
+        except TokenError:
+            return default_error_message
+
+class EmailVerificationSerializer(serializers.ModelSerializer):
+    token = serializers.CharField(max_length=555)
+
+    class Meta:
+        model = CustomUser
+        fields = ['token']
+
+class ResetPasswordEmailRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField(min_length=2)
+
+    # redirect_url = serializers.CharField(max_length=500, allow_blank=True)
+
+    class Meta:
+        fields = ['email']
+
+class SetNewPasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(
+        min_length=6, max_length=68, write_only=True)
+    user_id= serializers.CharField(read_only=True)
+
+    class Meta:
+        fields = ['password']
+
+    def update(self, instance, validated_data):
+        try:
+            user = CustomUser.objects.get(user_id=validated_data.get('user_id', instance.user_id))
+            user.set_password(validated_data.get('password', instance.password))
+            user.save()
+        except Exception as e:
+            raise AuthenticationFailed('The reset link is invalid', 401)
+
+        return instance

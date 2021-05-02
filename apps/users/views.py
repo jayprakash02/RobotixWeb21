@@ -1,194 +1,196 @@
-from django.shortcuts import render,redirect
-from rest_framework import viewsets,status
+from django.shortcuts import render
+from django.contrib.auth import authenticate
+from rest_framework import viewsets, permissions, generics, status, views
 from rest_framework.response import Response
-from django.http import HttpResponse, Http404
-from .models import UserProfile
-from .serializers import UserProfileSerializer
-from .serializers import UserDetailsSerializer as UD
-from rest_auth import views
-from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView
+from rest_framework_simplejwt.tokens import AccessToken
 from rest_framework.permissions import IsAuthenticated
-import requests as rq
-from django.contrib import messages
-from django.contrib.auth.models import auth
-from django.contrib.auth.decorators import login_required
-import time
-from roboPortal.models import Team, portalUser
-from roboexpo.models import Roboexpo
+from .utils import Util
+from .models import CustomUser
+from .serializers import *
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
+from django.http import HttpResponseRedirect, HttpResponsePermanentRedirect
+import jwt
+from django.conf import settings
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from .renderers import UserRenderer
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.shortcuts import redirect
+import datetime   
+import os
+FRONTEND_URL='https://robotix.nitrr.ac.in'
 
-# Create your views here.
-class UserProfileViewSet(viewsets.ModelViewSet):
-    serializer_class = UserProfileSerializer
-    queryset = ''
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = CustomUserSerializer
+    http_method_names = ['get', 'patch', 'head']
+    lookup_field = 'user_id'
 
+class RegisterView(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
 
-class UserDetailsView(RetrieveUpdateAPIView):
-    """
-    Reads and updates UserModel fields
-    Accepts GET, PUT, PATCH methods.
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
 
-    Default accepted fields: username, first_name, last_name
-    Default display fields: pk, username, email, first_name, last_name
-    Read-only fields: pk, email
+            user = CustomUser.objects.get(email=serializer.data['email'])
+            user_access_token = AccessToken.for_user(user)
+            current_site = FRONTEND_URL
+            relativeEmailLink = reverse('users:email-verify')
+            # relativeMobileLink = reverse('users:mobile-verify')
+            abs_emailurl = current_site + relativeEmailLink + "?token=" + str(user_access_token)
+            # abs_mobileurl = current_site + relativeMobileLink + "?token=" + str(user_access_token)
+            
+            email_body = 'Hi ' + user.username + \
+                        ' Use the link below to verify your email \n' + abs_emailurl
+            data = {'email_body': email_body, 'to_email': user.email,
+                    'email_subject': 'Verify your email', 'email_link': abs_emailurl}
 
-    Returns UserModel fields.
-    """
-    serializer_class = UD
-    permission_classes = (IsAuthenticated,)
+            # mobile_msg = 'Hi ' + user.username + \
+                        # ' Use the link below to verify your mobile \n' + abs_mobileurl
 
-    def get_object(self):
-        return self.request.user
+            Util.send_email(data)
+            # Util.send_msg(data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def get_queryset(self):
-        """
-        Adding this method since it is sometimes called when using
-        django-rest-swagger
-        https://github.com/Tivix/django-rest-auth/issues/275
-        """
-        return get_user_model().objects.none()
+class VerifyEmail(views.APIView):
+    serializer_class = EmailVerificationSerializer
 
+    token_param_config = openapi.Parameter('token', in_=openapi.IN_QUERY, description='Description', type=openapi.TYPE_STRING)
 
-def verify_user(request,key):
-    payload = {'key':key}
-    my_response =rq.post('https://robotix.nitrr.ac.in/rest-auth/registration/verify-email/', json= payload)
-    data = my_response.json()
-    if data['detail'] == "ok":
-        return HttpResponse("verified")
-    else:
-        raise Http404("Unable to verify")
-
-@login_required
-def accountView(request):
-    # print(request.user.name)
-
-    if 'abstract' in request.POST:
-        team = Team.objects.get(member = request.user)
-        team.abstract = request.FILES['myfile']
-        team.save()
-        profile_obj = UserProfile.objects.get(email = request.user.email)
-        portal = portalUser.objects.get(user = request.user)
-        dict = { 'profile':profile_obj, 'Team': team ,'portal':portal}
-        return render(request,'profile-page.html', context=dict)
-    else:
-        # team = Team.objects.get(member = request.user)
-        dict = {'roboexpo':None}
+    @swagger_auto_schema(manual_parameters=[token_param_config])
+    def get(self, request):
+        token = request.GET.get('token')
         try:
-            roboexpo_obj = Roboexpo.objects.get(email = request.user.email)
-            dict['roboexpo'] = roboexpo_obj
-        except:
-            pass
-        profile_obj = UserProfile.objects.get(email = request.user.email)
-        portal = portalUser.objects.get(user = request.user)
-        if portal.joined_team:
-            team = Team.objects.get(member = request.user)
-            # print(team.abstract=='')
-            # print(team.abstract)
-            if dict['roboexpo']:
-                dict = { 'profile':profile_obj, 'Team': team ,'portal':portal,'roboexpo':roboexpo_obj}
-            else:
-                dict = { 'profile':profile_obj, 'Team': team ,'portal':portal}
-        else:
-            if dict['roboexpo']:
-                dict = { 'profile':profile_obj ,'portal':portal,'roboexpo':roboexpo_obj}
-            else:
-                dict = { 'profile':profile_obj ,'portal':portal}
-        # print(team.abstract is None)
-        return render(request,'profile-page.html', context=dict)
-
-def verificationView(request):
-    return render(request, 'confirm.html')
-
-def loginView(request,message = None):
-    if 'login' in request.POST:
-        email = request.POST['email']
-        password = request.POST['password']
-        user = auth.authenticate(email= email, password = password)
-        if user != None:
-            auth.login(request,user)
-            return redirect('/accounts/account/')
-        else:
-            return render(request,'login-page.html',{'msg':"Invalid credentials"})
-        """
-        payload = {'email':email,'password':password}
-        response = rq.post('http://127.0.0.1:8000/rest-auth/login/', json= payload)
-        if response.status_code == 200 or response.status_code == 201:
-            return redirect('/robothon/')
-        elif response.status_code == 400 or response.status_code == 404:
-            msg = "Invalid Credential"
-            return render(request,'users/login.html',{'msg':msg})
-        """
-    return render(request,'login-page.html')
-
-def registerView(request):
-    if 'register' in request.POST:
-        email = request.POST['email']
-        name = request.POST['name']
-        phone_no = request.POST['phone_no']
-        password = request.POST['password']
-        password1 = request.POST['password1']
-        payload = {'email':email,'name':name,'phone_no':phone_no,'password':password,'password1':password1}
-        response = rq.post('https://robotix.nitrr.ac.in/rest-auth/registration/', json= payload)
-        #data = my_response.json()
-        if response.status_code in range(200,300):
-            messages.success(request, 'A verification email has been sent. Please verify and login')
-            return redirect('/accounts/account/')
-        elif response.status_code in range(400,500):
-            msg = "Invalid Credential"
-            return render(request,'register-page.html',{'msg':msg})
-    return render(request,'register-page.html')
-
-
-def email_exists(request,email):
-    if UserProfile.objects.filter(email = email).exists() :
-        return HttpResponse("true")
-    else:
-        return HttpResponse("false")
-
-def forget_pass(request):
-    if 'forgot' in request.POST:
-        email = request.POST['email']
-        payload = {'email':email}
-        response =rq.post('https://robotix.nitrr.ac.in/rest-auth/password/reset/', json= payload)
-        if response.status_code in range(200,300):
-            return redirect('/accounts/forgot/confirm/')
-        else:
-            return render(request,'forgot-page.html',{'msg':"Invalid Credentials"})
-    return render(request,'forgot-page.html')
-
-
-def forget_pass_email_confirm_view(request):
-    return render(request,'confirm.html')
-
-
-def forgot_change(request, uid, token):
-    if request.method == "POST":
-        new_password1 = request.POST['new_password1']
-        new_password2 = request.POST['new_password2']
-        payload = {'new_password1':new_password1,'new_password2':new_password2,'uid':uid,'token':token}
-        response =rq.post('https://robotix.nitrr.ac.in/rest-auth/password/reset/confirm/',json= payload)
-        if response.status_code in range(200,300):
-            return HttpResponse("Password for the given email id changed")
-        else:
-            return render(request,'reset-page.html',{'uid':uid,'token':token,'msg':"Invalid credentials"})
-    return render(request,'reset-page.html',{'uid':uid,'token':token})
-
-@login_required
-def change(request):
-
-    if request.method == "POST":
-        cur_password = request.POST['old_password']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
-        user = auth.authenticate(email = request.user.email,password = cur_password)
-        if user != None:
-            if password1 == password2:
-                user.set_password(password1)
+            payload = jwt.decode(token, settings.SECRET_KEY)
+            user = CustomUser.objects.get(id=payload['user_id'])
+            if not user.email_verified:
+                user.email_verified = True
                 user.save()
-                return render(request,'pass-change-done.html')
+            return Response({'email': 'Successfully activated'}, status=status.HTTP_200_OK)
+        except jwt.ExpiredSignatureError as identifier:
+            return Response({'error': 'Activation Expired'}, status=status.HTTP_400_BAD_REQUEST)
+        except jwt.exceptions.DecodeError as identifier:
+            return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
 
-            else:
-                return render(request,'pass-change-page.html',{'msg':"Passwords do not match"})
+class LoginAPIView(generics.GenericAPIView):
+    serializer_class=LoginSerializer
+
+    def post(self, request):
+        if 'phone_number' in request.data.keys():
+            serializer = PhoneLoginSerializer(data=request.data)
+            if serializer.is_valid(raise_exception=True):
+                response = Response(
+                    serializer.data
+                , status=status.HTTP_200_OK)
+
+                response.set_cookie(
+                    key='ACCESS_TOKEN',
+                    value=serializer.data['tokens']['access'],
+                    httponly=False,
+                )
+                response.set_cookie(
+                    key='REFRESH_TOKEN',
+                    value=serializer.data['tokens']['refresh'],
+                    httponly=False,
+                )
+
+                return response
         else:
-            return render(request,'pass-change-page.html',{'msg':"Invalid password"})
+            serializer = self.serializer_class(data=request.data)
+            if serializer.is_valid(raise_exception=True):
+                response = Response(serializer.data, status=status.HTTP_200_OK)
+                response.set_cookie(
+                    key='ACCESS_TOKEN',
+                    value=serializer.data['tokens']['access'],
+                    samesite='Lax',secure=False, httponly=True
+                )
+                response.set_cookie(
+                    key='REFRESH_TOKEN',
+                    value=serializer.data['tokens']['refresh'],
+                    samesite='Lax',secure=False, httponly=True
+                )
 
-    return render(request,'pass-change-page.html')
+                return response
+
+class LogoutAPIView(generics.GenericAPIView):
+    serializer_class = LogoutSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class RequestPasswordResetEmail(generics.GenericAPIView):
+    serializer_class = ResetPasswordEmailRequestSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        email = request.data.get('email', '')
+
+        if CustomUser.objects.filter(email=email).exists():
+            user = CustomUser.objects.get(email=email)
+            uidb64 = urlsafe_base64_encode(smart_bytes(user.user_id))
+            token = PasswordResetTokenGenerator().make_token(user)
+            current_site = FRONTEND_URL
+            relativeLink = reverse(
+                'users:password-reset-confirm', kwargs={'uidb64': uidb64, 'token': token})
+
+            redirect_url = FRONTEND_URL
+
+            absurl = current_site + relativeLink
+            email_body = 'Hello, \n Use link below to reset your password  \n' + \
+                         absurl + "?redirect_url=" + redirect_url
+            data = {'email_body': email_body, 'to_email': user.email,
+                    'email_subject': 'Reset your passsword'}
+            Util.send_email(data)
+            return Response({'success': 'We have sent you a link to reset your password'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'failure' : 'Email does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class PasswordTokenCheckAPI(generics.GenericAPIView):
+    serializer_class = SetNewPasswordSerializer
+
+    def patch(self, request, uidb64, token):
+
+        try:
+            user_id = smart_str(urlsafe_base64_decode(uidb64))
+            user = CustomUser.objects.get(user_id=user_id)
+
+            if PasswordResetTokenGenerator().check_token(user, token):
+                serializer = self.serializer_class(user, data=request.data)
+                if serializer.is_valid(raise_exception=True):
+                    serializer.save(user_id=user_id)
+                return Response({'message': 'Password reset success'}, status=status.HTTP_200_OK)
+            else: 
+                # if len(redirect_url) > 3:
+                #     return CustomRedirect(redirect_url + '?token_valid=False')
+                # else:
+                #     return CustomRedirect(os.environ.get('FRONTEND_URL', '') + '?token_valid=False')
+                return Response({'message': 'Password reset failed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            # if redirect_url and len(redirect_url) > 3:
+            #     return CustomRedirect(
+            #         redirect_url + '?token_valid=True&message=Credentials Valid&uidb64=' + uidb64 + '&token=' + token)
+            # else:
+            #     return CustomRedirect(os.environ.get('FRONTEND_URL', '') + '?token_valid=False')
+        except DjangoUnicodeDecodeError as identifier:
+            try:
+                if not PasswordResetTokenGenerator().check_token(user):
+                    # return CustomRedirect(redirect_url + '?token_valid=False')
+                    print('failure user')
+
+            except UnboundLocalError as e:
+                return Response({'error': 'Token is not valid, please request a new one'},
+                                status=status.HTTP_400_BAD_REQUEST)

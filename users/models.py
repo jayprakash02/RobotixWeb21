@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser,PermissionsMixin
 from rest_framework_simplejwt.tokens import RefreshToken
+from phone_field import PhoneField
 
 import uuid
 
@@ -29,7 +30,7 @@ YEAR = (
     ('4','4'),
 )
 
-class Users(AbstractBaseUser,PermissionsMixin):
+class CustomUser(AbstractBaseUser,PermissionsMixin):
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
@@ -41,7 +42,7 @@ class Users(AbstractBaseUser,PermissionsMixin):
     phone_number = PhoneField(blank=True)
     domain = models.CharField(choices=DOMIAN,max_length=2)
     gender = models.CharField(max_length=32, choices=GENDER, default='N')
-    profile = models.ImageField(upload_to='members/')
+    profile = models.ImageField(upload_to='members/',blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     year = models.CharField(choices=YEAR,max_length=1)
     passout = models.BooleanField(default=False)

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'import_export',
     'django_celery_beat',
     'django_celery_results',
+    'phone_field',
     'rest_framework_swagger',
 
     #apps

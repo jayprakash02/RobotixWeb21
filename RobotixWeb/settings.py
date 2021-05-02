@@ -7,6 +7,7 @@ from pathlib import Path
 import os
 import sys
 from decouple import config
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
@@ -37,19 +38,18 @@ INSTALLED_APPS = [
     #pips
     'corsheaders',
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'rest_auth',
-    'rest_auth.registration',
     'rest_framework',
     'rest_framework.authtoken',
     'import_export',
     'django_celery_beat',
     'django_celery_results',
-    'rest_framework_swagger',
+    'phone_field',
+    'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
+
 
     #apps
+    'users',
     "about",
     'achievements',
     'certificate',
@@ -57,10 +57,9 @@ INSTALLED_APPS = [
     'events',
     'extras',
     'gallery',
-    'roboexpo',
-    'roboPortal',
-    'users',
-    'workshops',
+    # 'roboexpo',
+    # 'roboPortal',
+    # 'workshops',
 ]
 
 MIDDLEWARE = [
@@ -170,33 +169,29 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #drf
-REST_AUTH_SERIALIZERS = {
-    "USER_DETAILS_SERIALIZER": "users.serializers.UserDetailsSerializer",
-}
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+
 }
 
 
 #auth
 
-ACCOUNT_ADAPTER = 'users.adapter.CustomAccountAdapter'
-AUTH_USER_MODEL = 'users.UserProfile'
+AUTH_USER_MODEL = 'users.CustomUser'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-SITE_ID = 1
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-OLD_PASSWORD_FIELD_ENABLED = True
-LOGOUT_ON_PASSWORD_CHANGE = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+
 
 #email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -218,3 +213,26 @@ LOGOUT_REDIRECT_URL = '/'
 
 #celery
 CELERY_RESULT_BACKEND = "django-db"
+BROKER_URL = os.environ.setdefault('REDIS_URL', 'redis://localhost:6379/')
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+# CELERY_RESULT_BACKEND = os.environ.setdefault('REDIS_URL', 'redis://localhost:6379/')
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+#simple_jwt
+SIMPLE_JWT={
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=5),
+}
+
+#swagger
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}

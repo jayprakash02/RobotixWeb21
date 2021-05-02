@@ -38,30 +38,25 @@ INSTALLED_APPS = [
     #pips
     'corsheaders',
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'rest_auth',
-    'rest_auth.registration',
     'rest_framework',
     'rest_framework.authtoken',
     'import_export',
     'django_celery_beat',
     'django_celery_results',
     'phone_field',
-    'rest_framework_swagger',
     'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
 
 
     #apps
     'users',
-    # "about",
-    # 'achievements',
-    # 'certificate',
-    # 'contact',
-    # 'events',
-    # 'extras',
-    # 'gallery',
+    "about",
+    'achievements',
+    'certificate',
+    'contact',
+    'events',
+    'extras',
+    'gallery',
     # 'roboexpo',
     # 'roboPortal',
     # 'workshops',
@@ -180,10 +175,13 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+
 }
 
 
@@ -192,14 +190,8 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'users.CustomUser'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-SITE_ID = 1
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-OLD_PASSWORD_FIELD_ENABLED = True
-LOGOUT_ON_PASSWORD_CHANGE = True
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+
+
 
 #email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -221,9 +213,26 @@ LOGOUT_REDIRECT_URL = '/'
 
 #celery
 CELERY_RESULT_BACKEND = "django-db"
+BROKER_URL = os.environ.setdefault('REDIS_URL', 'redis://localhost:6379/')
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+# CELERY_RESULT_BACKEND = os.environ.setdefault('REDIS_URL', 'redis://localhost:6379/')
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 #simple_jwt
 SIMPLE_JWT={
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=5),
+}
+
+#swagger
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
 }

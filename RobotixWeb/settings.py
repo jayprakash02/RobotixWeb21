@@ -7,6 +7,7 @@ from pathlib import Path
 import os
 import sys
 from decouple import config
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
@@ -49,19 +50,21 @@ INSTALLED_APPS = [
     'django_celery_results',
     'phone_field',
     'rest_framework_swagger',
+    'rest_framework_simplejwt.token_blacklist',
+
 
     #apps
-    "about",
-    'achievements',
-    'certificate',
-    'contact',
-    'events',
-    'extras',
-    'gallery',
-    'roboexpo',
-    'roboPortal',
     'users',
-    'workshops',
+    # "about",
+    # 'achievements',
+    # 'certificate',
+    # 'contact',
+    # 'events',
+    # 'extras',
+    # 'gallery',
+    # 'roboexpo',
+    # 'roboPortal',
+    # 'workshops',
 ]
 
 MIDDLEWARE = [
@@ -171,9 +174,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #drf
-REST_AUTH_SERIALIZERS = {
-    "USER_DETAILS_SERIALIZER": "users.serializers.UserDetailsSerializer",
-}
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.AllowAny',
@@ -188,8 +189,8 @@ REST_FRAMEWORK = {
 
 #auth
 
-ACCOUNT_ADAPTER = 'users.adapter.CustomAccountAdapter'
-AUTH_USER_MODEL = 'users.UserProfile'
+AUTH_USER_MODEL = 'users.CustomUser'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 SITE_ID = 1
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
@@ -220,3 +221,9 @@ LOGOUT_REDIRECT_URL = '/'
 
 #celery
 CELERY_RESULT_BACKEND = "django-db"
+
+#simple_jwt
+SIMPLE_JWT={
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=5),
+}

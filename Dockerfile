@@ -6,7 +6,7 @@ COPY ./requirements.txt /requirements.txt
 RUN apk add --no-cache --update --virtual .tmp gcc libc-dev make linux-headers libressl-dev musl-dev libffi-dev cargo
 RUN apk add python3-dev py3-setuptools tiff-dev jpeg-dev openjpeg-dev zlib-dev freetype-dev lcms2-dev \
     libwebp-dev tcl-dev tk-dev harfbuzz-dev fribidi-dev libimagequant-dev \
-    libxcb-dev libpng-dev libssl.so.48 libcrypto.so.46
+    libxcb-dev libpng-dev 
 
 
 RUN python -m pip install --upgrade pip

@@ -3,11 +3,9 @@ FROM python:3.8-alpine
 ENV PATH="/scripts:${PATH}"
 
 COPY ./requirements.txt /requirements.txt
-RUN apk add --no-cache --update --virtual .tmp gcc libc-dev make linux-headers libressl-dev musl-dev libffi-dev cargo
-RUN apk add python3-dev py3-setuptools tiff-dev jpeg-dev openjpeg-dev zlib-dev freetype-dev lcms2-dev \
-    libwebp-dev tcl-dev tk-dev harfbuzz-dev fribidi-dev libimagequant-dev \
-    libxcb-dev libpng-dev 
-
+RUN apk add --no-cache --update --virtual .tmp gcc libc-dev linux-headers make
+#cryptography & pillow
+RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev cargo py3-setuptools
 
 RUN python -m pip install --upgrade pip
 RUN pip install -r /requirements.txt

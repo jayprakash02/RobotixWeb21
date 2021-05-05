@@ -40,5 +40,7 @@ urlpatterns = [
     # path('roboexpo/', include('roboexpo.urls'), name="roboexpo"),
     # path('roboPortal/', include('roboPortal.urls'), name="roboPortal"),
    #  path('workshops/', include('roboPortal.urls'), name="roboPortal"),
+    path('recruitment/', include('recruitment.urls'), name="recruitment"),
+
 
 ]

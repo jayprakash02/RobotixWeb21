@@ -16,11 +16,15 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY','something bad here')
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = bool(int(os.environ.get('DEBUG',0)))
+# DEBUG = bool(int(os.environ.get('DEBUG',0)))
+
+DEBUG = config('DEBUG', default=False, cast=bool)
+# DEBUG = True
 
 ALLOWED_HOSTS = []
 ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
@@ -64,6 +68,7 @@ INSTALLED_APPS = [
     # 'roboexpo',
     # 'roboPortal',
     # 'workshops',
+    'recruitment',
 ]
 
 MIDDLEWARE = [
@@ -110,10 +115,21 @@ if DEBUG:
 
 # if DEBUG:
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'robotixdb3',
+    #     'USER': 'postgres',
+    #     'PASSWORD' :'',
+    #     'HOST' : 'localhost',
+    #     'PORT' : '5433'
+    # }
+
+
 }
 # else:
 #     DATABASES = {

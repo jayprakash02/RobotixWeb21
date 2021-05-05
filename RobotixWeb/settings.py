@@ -99,7 +99,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'RobotixWeb.wsgi.application'
 
-#cors
+
 if DEBUG:
     CORS_ORIGIN_WHITELIST = (
         'http://localhost:3000',
@@ -109,25 +109,24 @@ if DEBUG:
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 # if DEBUG:
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'robotixdb3',
+        'USER': 'robot',
+        'PASSWORD' :'django',
+        'HOST' : 'db',
+        'PORT' : '5432'
+
     }
 }
-# else:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql',
-#             'NAME': 'robotixdb3',
-#             'USER': 'robot',
-#             'PASSWORD' :'django',
-#             'HOST' : 'localhost',
-#             'PORT' : ''
-
-#         }
-
-#     }
 
 
 # Password validation
@@ -195,7 +194,7 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'users.CustomUser'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-
+SITE_ID=1
 
 
 #email
@@ -218,9 +217,9 @@ LOGOUT_REDIRECT_URL = '/'
 
 #celery
 CELERY_RESULT_BACKEND = "django-db"
-BROKER_URL = os.environ.setdefault('REDIS_URL', 'redis://localhost:6379/')
+BROKER_URL = os.environ.setdefault('REDIS_URL', 'redis://redis:6379/')
 BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
-# CELERY_RESULT_BACKEND = os.environ.setdefault('REDIS_URL', 'redis://localhost:6379/')
+CELERY_RESULT_BACKEND = os.environ.setdefault('REDIS_URL', 'redis://redis:6379/')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

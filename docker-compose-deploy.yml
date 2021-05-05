@@ -9,14 +9,14 @@ services:
             - ../RobotixWeb21:/RobotixWeb21
         environment: 
             - SECRET_KEY=o!m3w+(x3q3_c9*bpe))v%5=8w_)&o_s4b*z=p-ij(#*^v%vob
-            - ALLOWED_HOST=127.0.0.1,localhost
+            - ALLOWED_HOST=3.16.128.166
     proxy:
         build:
             context: ./proxy
         volumes: 
             - static_data:/vol/static
         ports:
-            - "8080:8080"
+            - "80:80"
         depends_on: 
             - app
 

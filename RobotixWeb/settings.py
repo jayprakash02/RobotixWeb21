@@ -22,7 +22,9 @@ SECRET_KEY = 'o!m3w+(x3q3_c9*bpe))v%5=8w_)&o_s4b*z=p-ij(#*^v%vob'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-DEBUG = bool(int(os.environ.get('DEBUG',0)))
+# DEBUG = bool(int(os.environ.get('DEBUG',0)))
+
+DEBUG = True
 
 ALLOWED_HOSTS = []
 ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
@@ -66,6 +68,7 @@ INSTALLED_APPS = [
     # 'roboexpo',
     # 'roboPortal',
     # 'workshops',
+    'recruitment',
 ]
 
 MIDDLEWARE = [
@@ -112,10 +115,21 @@ if DEBUG:
 
 # if DEBUG:
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'robotixdb3',
+    #     'USER': 'postgres',
+    #     'PASSWORD' :'',
+    #     'HOST' : 'localhost',
+    #     'PORT' : '5433'
+    # }
+
+
 }
 # else:
 #     DATABASES = {

@@ -99,7 +99,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'RobotixWeb.wsgi.application'
 
-#cors
+
 if DEBUG:
     CORS_ORIGIN_WHITELIST = (
         'http://localhost:3000',
@@ -109,25 +109,24 @@ if DEBUG:
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 # if DEBUG:
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'robotixdb3',
+        'USER': 'robot',
+        'PASSWORD' :'django',
+        'HOST' : 'db',
+        'PORT' : '5432'
+
     }
 }
-# else:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql',
-#             'NAME': 'robotixdb3',
-#             'USER': 'robot',
-#             'PASSWORD' :'django',
-#             'HOST' : 'localhost',
-#             'PORT' : ''
-
-#         }
-
-#     }
 
 
 # Password validation

@@ -194,7 +194,7 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'users.CustomUser'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-
+SITE_ID=1
 
 
 #email
@@ -217,9 +217,9 @@ LOGOUT_REDIRECT_URL = '/'
 
 #celery
 CELERY_RESULT_BACKEND = "django-db"
-BROKER_URL = os.environ.setdefault('REDIS_URL', 'redis://localhost:6379/')
+BROKER_URL = os.environ.setdefault('REDIS_URL', 'redis://redis:6379/')
 BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
-# CELERY_RESULT_BACKEND = os.environ.setdefault('REDIS_URL', 'redis://localhost:6379/')
+CELERY_RESULT_BACKEND = os.environ.setdefault('REDIS_URL', 'redis://redis:6379/')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

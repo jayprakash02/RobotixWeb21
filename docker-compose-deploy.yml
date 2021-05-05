@@ -10,6 +10,8 @@ services:
         environment: 
             - SECRET_KEY=o!m3w+(x3q3_c9*bpe))v%5=8w_)&o_s4b*z=p-ij(#*^v%vob
             - ALLOWED_HOST=3.16.128.166
+        depends_on:
+            - db
     proxy:
         build:
             context: ./proxy
@@ -27,6 +29,26 @@ services:
             - POSTGRES_USER=robot
             - POSTGRES_PASSWORD=django
             - POSTGRES_DB=robotixdb3
+
+    redis:
+        image: redis:alpine
+
+    celery:
+        restart: always
+        build:
+            context: .
+        command: celery -A RobotixWeb worker -l info
+        volumes:
+        - ../RobotixWeb21:/RobotixWeb21
+        environment:
+            - DB_HOST=db
+            - DB_NAME=robotixdb3
+            - DB_USER=robot
+            - DB_PASS=robotixdb3
+        depends_on:
+            - db
+            - redis
+            - app
 volumes:
     postgres_data:
     static_data:

@@ -16,14 +16,22 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# SECRET_KEY = os.environ.get('SECRET_KEY')
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
+# DEBUG = bool(int(os.environ.get('DEBUG',0)))
+
 DEBUG = config('DEBUG', default=False, cast=bool)
+# DEBUG = True
 
-ALLOWED_HOSTS = ['*',]
-
+ALLOWED_HOSTS = []
+ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
+if ALLOWED_HOSTS_ENV:
+    ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(','))
+else:
+    ALLOWED_HOSTS = ['localhost','*']
 
 # Application definition
 
@@ -60,6 +68,7 @@ INSTALLED_APPS = [
     # 'roboexpo',
     # 'roboPortal',
     # 'workshops',
+    'recruitment',
 ]
 
 MIDDLEWARE = [
@@ -95,7 +104,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'RobotixWeb.wsgi.application'
 
-#cors
+
 if DEBUG:
     CORS_ORIGIN_WHITELIST = (
         'http://localhost:3000',
@@ -104,26 +113,29 @@ if DEBUG:
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-if DEBUG:
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-            }
-        }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'robotixdb3',
-            'USER': 'robot',
-            'PASSWORD' :'django',
-            'HOST' : 'localhost',
-            'PORT' : ''
+# if DEBUG:
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
-        }
+DATABASES = {
+
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'robotixdb3',
+        'USER': 'robot',
+        'PASSWORD' :'django',
+        'HOST' : 'db',
+        'PORT' : '5432'
 
     }
+
+
+
+}
 
 
 # Password validation
@@ -162,11 +174,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
-MEDIA_URL = '/media/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'build/static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_URL = '/static/static/'
+MEDIA_URL = '/static/media/'
+
+
+STATIC_ROOT = '/vol/web/static'
+MEDIA_ROOT = '/vol/web/media'
 
 #drf
 
@@ -190,7 +203,7 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'users.CustomUser'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-
+SITE_ID=1
 
 
 #email
@@ -213,9 +226,9 @@ LOGOUT_REDIRECT_URL = '/'
 
 #celery
 CELERY_RESULT_BACKEND = "django-db"
-BROKER_URL = os.environ.setdefault('REDIS_URL', 'redis://localhost:6379/')
+BROKER_URL = os.environ.setdefault('REDIS_URL', 'redis://redis:6379/')
 BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
-# CELERY_RESULT_BACKEND = os.environ.setdefault('REDIS_URL', 'redis://localhost:6379/')
+CELERY_RESULT_BACKEND = os.environ.setdefault('REDIS_URL', 'redis://redis:6379/')
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'

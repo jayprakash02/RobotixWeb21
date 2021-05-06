@@ -11,11 +11,11 @@ from rest_framework_simplejwt.views import TokenObtainPairView,TokenRefreshView
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Snippets API",
+      title="Robotix Web API",
       default_version='v1',
       description="Test description",
       terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
+      contact=openapi.Contact(email="unijay12@gmail.com"),
       license=openapi.License(name="BSD License"),
    ),
    public=True,
@@ -40,5 +40,7 @@ urlpatterns = [
     # path('roboexpo/', include('roboexpo.urls'), name="roboexpo"),
     # path('roboPortal/', include('roboPortal.urls'), name="roboPortal"),
    #  path('workshops/', include('roboPortal.urls'), name="roboPortal"),
+    path('recruitment/', include('recruitment.urls'), name="recruitment"),
+
 
 ]

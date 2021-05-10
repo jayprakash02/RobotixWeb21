@@ -2,25 +2,14 @@ version: '3.7'
 
 services:
     app:
-        build: 
-            context: .
+        image: robotixweb/backend:latest
         volumes: 
             - static_data:/vol/web
-            - ../RobotixWeb21:/RobotixWeb21
         environment: 
             - SECRET_KEY=o!m3w+(x3q3_c9*bpe))v%5=8w_)&o_s4b*z=p-ij(#*^v%vob
-            - ALLOWED_HOST=3.16.128.166
+            - ALLOWED_HOST=*
         depends_on:
             - db
-    proxy:
-        build:
-            context: ./proxy
-        volumes: 
-            - static_data:/vol/static
-        ports:
-            - "80:80"
-        depends_on: 
-            - app
     db:
         image: postgres:12.0-alpine
         volumes:

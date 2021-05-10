@@ -2,13 +2,10 @@ version: '3.7'
 
 services: 
     app:
-        build: 
-            context: .
+        image: robotixweb/backend:latest
         ports:
             - "8000:8000"
-        volumes: 
-            - ../RobotixWeb21:/RobotixWeb21
-        command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+        command: gunicorn RobotixWeb.wsgi --bind 0.0.0.0:8000
         environment: 
             - DEBUG=1
         depends_on:

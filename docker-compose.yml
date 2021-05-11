@@ -2,13 +2,10 @@ version: '3.7'
 
 services: 
     app:
-        build: 
-            context: .
+        image: robotixweb/backend:latest
         ports:
             - "8000:8000"
-        volumes: 
-            - ../RobotixWeb21:/RobotixWeb21
-        command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+        command: python3 manage.py runserver 0.0.0.0:8000
         environment: 
             - DEBUG=1
         depends_on:
@@ -26,11 +23,8 @@ services:
         image: redis:alpine
     celery:
         restart: always
-        build:
-            context: .
+        image: robotixweb/backend:latest
         command: celery -A RobotixWeb worker -l info
-        volumes:
-        - ../RobotixWeb21:/RobotixWeb21
         environment:
             - DB_HOST=db
             - DB_NAME=robotixdb3

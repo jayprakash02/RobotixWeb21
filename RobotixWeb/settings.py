@@ -213,7 +213,7 @@ STATIC_URL = '/static/static/'
 MEDIA_URL = '/static/media/'
 
 if heroku_config:
-    STATIC_ROOT = '././staticfiles'
+    STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../staticfiles'))
     # MEDIA_ROOT = 'mediafiles'
 else:
     STATIC_ROOT = '/vol/web/static'

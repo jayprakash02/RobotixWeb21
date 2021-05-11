@@ -23,24 +23,24 @@ schema_view = get_schema_view(
 )
 urlpatterns = [
     path('', schema_view.with_ui('swagger',cache_timeout=0), name='schema-swagger-ui'),
-    path('api-auth/', include('rest_framework.urls')),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('admin/', admin.site.urls),
+    path('api/api-auth/', include('rest_framework.urls')),
+    path('api/api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/admin/', admin.site.urls),
 
     #apps urls
-    path('users/', include('users.urls'), name="users"),
-    path('about/', include('about.urls'), name="about"),
-    path('achievements/', include('achievements.urls'), name="achievements"),
-    path('certificate/', include('certificate.urls'), name="certificate"),
-    path('contact/', include('contact.urls'), name="contact"),
-    path('events/', include('events.urls'), name="events"),
-    path('extras/', include('extras.urls'), name="extras"),
-    path('gallery/', include('gallery.urls'), name="gallery"),
-    # path('roboexpo/', include('roboexpo.urls'), name="roboexpo"),
-    # path('roboPortal/', include('roboPortal.urls'), name="roboPortal"),
-   #  path('workshops/', include('roboPortal.urls'), name="roboPortal"),
-    path('recruitment/', include('recruitment.urls'), name="recruitment"),
+    path('api/users/', include('users.urls'), name="users"),
+    path('api/about/', include('about.urls'), name="about"),
+    path('api/achievements/', include('achievements.urls'), name="achievements"),
+    path('api/certificate/', include('certificate.urls'), name="certificate"),
+    path('api/contact/', include('contact.urls'), name="contact"),
+    path('api/events/', include('events.urls'), name="events"),
+    path('api/extras/', include('extras.urls'), name="extras"),
+    path('api/gallery/', include('gallery.urls'), name="gallery"),
+    # path('api/roboexpo/', include('roboexpo.urls'), name="roboexpo"),
+    # path('api/roboPortal/', include('roboPortal.urls'), name="roboPortal"),
+   #  path('api/workshops/', include('roboPortal.urls'), name="roboPortal"),
+    path('api/recruitment/', include('recruitment.urls'), name="recruitment"),
 
 
 ]

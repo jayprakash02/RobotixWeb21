@@ -4,7 +4,8 @@
 
 # Vscode
 .vscode
-
+## COllectstatic
+/staticfiles
 
 ### Django ###
 *.log

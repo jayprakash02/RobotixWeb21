@@ -212,9 +212,12 @@ USE_TZ = True
 STATIC_URL = '/static/static/'
 MEDIA_URL = '/static/media/'
 
-
-STATIC_ROOT = '/vol/web/static'
-MEDIA_ROOT = '/vol/web/media'
+if heroku_config:
+    STATIC_ROOT = 'staticfiles'
+    # MEDIA_ROOT = 'mediafiles'
+else:
+    STATIC_ROOT = '/vol/web/static'
+    MEDIA_ROOT = '/vol/web/media'
 
 #drf
 

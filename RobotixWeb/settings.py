@@ -137,19 +137,6 @@ if DEBUG:
 #     }
 # }
 
-DATABASES = {
-
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'robotixdb3',
-        'USER': 'robot',
-        'PASSWORD' :'django',
-        'HOST' : 'db',
-        'PORT' : '5432'
-
-    }
-
-}
 
 if heroku_config:
     DATABASES = {
@@ -161,6 +148,20 @@ if heroku_config:
             'HOST': 'localhost',
             'PORT': '',
         }
+    }
+else:
+    DATABASES = {
+
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'robotixdb3',
+            'USER': 'robot',
+            'PASSWORD' :'django',
+            'HOST' : 'db',
+            'PORT' : '5432'
+
+        }
+
     }
 
     db_from_env = dj_database_url.config(conn_max_age=500)

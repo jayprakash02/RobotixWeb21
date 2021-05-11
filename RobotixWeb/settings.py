@@ -77,7 +77,6 @@ INSTALLED_APPS = [
 ## FOR Heroku
 if heroku_config: 
     INSTALLED_APPS.append('whitenoise.runserver_nostatic')
-    INSTALLED_APPS.append('django.contrib.staticfiles')
 
 
 

@@ -30,12 +30,12 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 heroku_config = config('heroku_config')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.herokuapp.com']
 ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
 if ALLOWED_HOSTS_ENV:
     ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(','))
 else:
-    ALLOWED_HOSTS = ['localhost','*']
+    ALLOWED_HOSTS = ['localhost','*', '.herokuapp.com']
 
 # Application definition
 

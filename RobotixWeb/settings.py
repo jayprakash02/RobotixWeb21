@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 # DEBUG = True
 
-heroku_config = config('heroku_config')
+heroku_config = config('heroku_config', default=True)
 
 ALLOWED_HOSTS = ['.herokuapp.com']
 ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
@@ -163,10 +163,10 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'robotixdb3',
-            'USER': 'robot',
-            'PASSWORD' :'django',
-            'HOST' : 'db',
-            'PORT' : '5432'
+            'USER': 'postgres',
+            'PASSWORD' :'ManishPort',
+            'HOST' : 'localhost',
+            'PORT' : '5433'
 
         }
 
@@ -213,7 +213,7 @@ STATIC_URL = '/static/static/'
 MEDIA_URL = '/static/media/'
 
 if heroku_config:
-    STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../staticfiles'))
+    STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'staticfiles'))
     # MEDIA_ROOT = 'mediafiles'
 else:
     STATIC_ROOT = '/vol/web/static'

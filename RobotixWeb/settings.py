@@ -8,6 +8,8 @@ import os
 import sys
 from decouple import config
 from datetime import timedelta
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
@@ -25,6 +27,8 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 # DEBUG = True
+
+heroku_config = False
 
 ALLOWED_HOSTS = []
 ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
@@ -70,6 +74,12 @@ INSTALLED_APPS = [
     # 'workshops',
     'recruitment',
 ]
+## FOR Heroku
+if heroku_config: 
+    INSTALLED_APPS.append('whitenoise.runserver_nostatic')
+    INSTALLED_APPS.append('django.contrib.staticfiles')
+
+
 
 MIDDLEWARE = [
     #cors
@@ -83,6 +93,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if heroku_config:
+    temp = ['whitenoise.middleware.WhiteNoiseMiddleware']
+    for i in range(len(MIDDLEWARE)):
+        temp.append(MIDDLEWARE[i])
+    MIDDLEWARE = temp
 
 ROOT_URLCONF = 'RobotixWeb.urls'
 
@@ -133,9 +149,27 @@ DATABASES = {
 
     }
 
-
-
 }
+
+if heroku_config:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': '<database_name>',
+            'USER': '<user_name>',
+            'PASSWORD': '<password>',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
+    }
+
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+
+    WHITENOISE_USE_FINDERS = True
+
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 
 # Password validation

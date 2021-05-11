@@ -213,7 +213,7 @@ STATIC_URL = '/static/static/'
 MEDIA_URL = '/static/media/'
 
 if heroku_config:
-    STATIC_ROOT = 'staticfiles'
+    STATIC_ROOT = '././staticfiles'
     # MEDIA_ROOT = 'mediafiles'
 else:
     STATIC_ROOT = '/vol/web/static'

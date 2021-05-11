@@ -141,13 +141,22 @@ if heroku_config:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'dapqpp3irpg2v6',
-            'USER': 'afuxrjuxqpcqie',
-            'PASSWORD': '45e1d4ad2957e053c5429df7de52da006383bc581f108305a6a2d95d2448efda',
-            'HOST': 'ec2-52-0-114-209.compute-1.amazonaws.com',
-            'PORT': '5432',
+            'NAME': '<database_name>',
+            'USER': '<user_name>',
+            'PASSWORD': '<password>',
+            'HOST': 'localhost',
+            'PORT': '',
         }
     }
+
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+
+    WHITENOISE_USE_FINDERS = True
+
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
 else:
     DATABASES = {
 
@@ -160,15 +169,8 @@ else:
             'PORT' : '5432'
 
         }
+
     }
-
-    db_from_env = dj_database_url.config(conn_max_age=500)
-    DATABASES['default'].update(db_from_env)
-
-    WHITENOISE_USE_FINDERS = True
-
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 
 
 # Password validation

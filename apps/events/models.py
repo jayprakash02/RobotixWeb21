@@ -32,6 +32,7 @@ class Event(models.Model):
     image = models.ManyToManyField(CertImage,blank=True)
     event_type = models.CharField(choices=EVENT_TYPE,max_length=2,blank=True,null=True)
     payment = models.IntegerField(null=True,blank=True)
+    date_time = models.DateTimeField(null=True,blank=True)
 
     def __str__(self):
         return self.title

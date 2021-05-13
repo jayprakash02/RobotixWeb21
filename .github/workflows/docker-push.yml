@@ -31,3 +31,11 @@ jobs:
           context: .
           push: true
           tags: robotixweb/backend:github
+      - 
+        name: send custom message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            New Backend Image Push to Dockerhub 

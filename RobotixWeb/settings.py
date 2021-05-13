@@ -163,10 +163,10 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'robotixdb3',
-            'USER': 'postgres',
-            'PASSWORD' :'ManishPort',
-            'HOST' : 'localhost',
-            'PORT' : '5433'
+            'USER': 'robot',
+            'PASSWORD' :'django',
+            'HOST' : 'db',
+            'PORT' : '5432'
 
         }
 

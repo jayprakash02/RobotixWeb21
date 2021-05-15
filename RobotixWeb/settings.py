@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     # 'roboPortal',
     # 'workshops',
     'recruitment',
+    
 ]
 ## FOR Heroku
 if heroku_config: 

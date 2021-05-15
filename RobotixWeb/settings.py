@@ -29,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 # DEBUG = True
 
-heroku_config = config('heroku_config', default=True)
+heroku_config = config('heroku_config', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['.herokuapp.com']
 ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
@@ -162,23 +162,23 @@ if heroku_config:
 else:
     DATABASES = {
         ## Leave the below for dgk
-        # 'default': {
-        #     'ENGINE': 'django.db.backends.postgresql',
-        #     'NAME': 'robotixdb3',
-        #     'USER': 'postgres',
-        #     'PASSWORD' :'',
-        #     'HOST' : 'localhost',
-        #     'PORT' : '5433'
-        # }
-
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'robotixdb3',
-            'USER': 'robot',
-            'PASSWORD' :'django',
-            'HOST' : 'db',
-            'PORT' : '5432'
+            'USER': 'postgres',
+            'PASSWORD' :'ManishPort',
+            'HOST' : 'localhost',
+            'PORT' : '5433'
         }
+
+        # 'default': {
+        #     'ENGINE': 'django.db.backends.postgresql',
+        #     'NAME': 'robotixdb3',
+        #     'USER': 'robot',
+        #     'PASSWORD' :'django',
+        #     'HOST' : 'db',
+        #     'PORT' : '5432'
+        # }
     }
 
 
@@ -218,8 +218,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/static/'
-MEDIA_URL = '/static/media/'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 
 if heroku_config:
     STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'staticfiles'))

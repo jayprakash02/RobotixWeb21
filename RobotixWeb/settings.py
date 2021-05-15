@@ -137,43 +137,27 @@ if DEBUG:
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+DATABASES = {
 
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'robotixdb3',
+        'USER': 'robot',
+        'PASSWORD' :'django',
+        'HOST' : 'db',
+        'PORT' : '5432'
 
-if heroku_config:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': '<database_name>',
-            'USER': '<user_name>',
-            'PASSWORD': '<password>',
-            'HOST': 'localhost',
-            'PORT': '',
-        }
     }
 
+}
+
+if heroku_config:
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
 
     WHITENOISE_USE_FINDERS = True
 
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-else:
-    DATABASES = {
-
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'robotixdb3',
-            'USER': 'robot',
-            'PASSWORD' :'django',
-            'HOST' : 'db',
-            'PORT' : '5432'
-
-        }
-
-    }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

@@ -9,6 +9,7 @@ import sys
 from decouple import config
 from datetime import timedelta
 import dj_database_url
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -73,6 +74,7 @@ INSTALLED_APPS = [
     # 'roboPortal',
     # 'workshops',
     'recruitment',
+    
 ]
 ## FOR Heroku
 if heroku_config: 
@@ -271,3 +273,5 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+django_heroku.settings(locals())

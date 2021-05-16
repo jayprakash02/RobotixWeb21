@@ -19,16 +19,15 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = os.environ.get('SECRET_KEY')
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # DEBUG = bool(int(os.environ.get('DEBUG',0)))
 
-DEBUG = config('DEBUG', default=False, cast=bool)
-# DEBUG = True
+DEBUG = os.environ.get('DEBUG', default=False)
 
-heroku_config = config('heroku_config', default=False)
+heroku_config = os.environ.get('heroku_config', default=False)
 
 ALLOWED_HOSTS = ['.herokuapp.com']
 ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
@@ -140,32 +139,19 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'robotixdb3',
-        'USER': 'robot',
-        'PASSWORD' :'django',
-        'HOST' : 'db',
-        'PORT' : '5432'
-
+        'NAME': '{}'.format(os.environ.get('POSTGRES_DB')),
+        'USER': '{}'.format(os.environ.get('POSTGRES_USER')),
+        'PASSWORD' :'{}'.format(os.environ.get('POSTGRES_PASSWORD')),
+        'HOST' : '{}'.format(os.environ.get('POSTGRES_HOST')),
+        'PORT' : '{}'.format(os.environ.get('POSTGRES_PORT'))
     }
 
 }
+
+db_from_env = dj_database_url.config(conn_max_age=500)
 if heroku_config:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': '<database_name>',
-            'USER': '<user_name>',
-            'PASSWORD': '<password>',
-            'HOST': 'localhost',
-            'PORT': '',
-        }
-    }
-
-    db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
-
     WHITENOISE_USE_FINDERS = True
-
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
@@ -247,16 +233,12 @@ SITE_ID=1
 #email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = config('EMAIL_HOST', default='localhost')
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
-EMAIL_PORT = config('EMAIL_PORT', default=25, cast=int)
+EMAIL_HOST = os.environ.get('EMAIL_HOST', default='localhost')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', default=False)
+EMAIL_PORT = os.environ.get('EMAIL_PORT', default=25)
 
-if DEBUG:
-    EMAIL_HOST_USER = 'wandavision5432@gmail.com'
-else :
-    EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', default='wandavision5432@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', default='')
 
 #messages
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

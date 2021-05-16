@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 # DEBUG = True
 
-heroku_config = config('heroku_config', default=True)
+heroku_config = config('heroku_config', default=False)
 
 ALLOWED_HOSTS = ['.herokuapp.com']
 ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
@@ -136,7 +136,19 @@ if DEBUG:
 #     }
 # }
 
+DATABASES = {
 
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'robotixdb3',
+        'USER': 'robot',
+        'PASSWORD' :'django',
+        'HOST' : 'db',
+        'PORT' : '5432'
+
+    }
+
+}
 if heroku_config:
     DATABASES = {
         'default': {
@@ -156,21 +168,6 @@ if heroku_config:
 
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
-else:
-    DATABASES = {
-
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'robotixdb3',
-            'USER': 'robot',
-            'PASSWORD' :'django',
-            'HOST' : 'db',
-            'PORT' : '5432'
-
-        }
-
-    }
 
 
 # Password validation

@@ -6,7 +6,11 @@ services:
             context: .
         ports:
             - "8000:8000"
-        command: python3 manage.py runserver 0.0.0.0:8000
+        volumes:
+            - .:/app/backend/
+        command: >
+            sh -c "python manage.py migrate && 
+            python manage.py runserver 0.0.0.0:8000"
         environment: 
             - DEBUG=1
         depends_on:
@@ -22,15 +26,37 @@ services:
 
     redis:
         image: redis:alpine
-    celery:
-        restart: always
-        image: robotixweb/backend:latest
-        command: celery -A RobotixWeb worker -l info
+    celery_beat:
+        build:
+            context: .
+        restart: on-failure
+        volumes:
+            - .:/app/backend/
+        command: celery -A RobotixWeb beat -l info 
         environment:
             - DB_HOST=db
             - DB_NAME=robotixdb3
             - DB_USER=robot
             - DB_PASS=robotixdb3
+            - SECRET_KEY=b8oypie)*b$pt6w#*$kvjjzejj5^d^2nek(bn0&lf8sac1zg-d
+        depends_on:
+            - db
+            - redis
+            - app
+
+    celery_worker:
+        build:
+            context: .
+        restart: always
+        command: celery -A RobotixWeb worker -l info
+        volumes:
+            - .:/app/backend/
+        environment:
+            - DB_HOST=db
+            - DB_NAME=robotixdb3
+            - DB_USER=robot
+            - DB_PASS=robotixdb3
+            - SECRET_KEY=b8oypie)*b$pt6w#*$kvjjzejj5^d^2nek(bn0&lf8sac1zg-d
         depends_on:
             - db
             - redis

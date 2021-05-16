@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib import auth
 
 from .models import CustomUser
-
+from rest_framework.exceptions import AuthenticationFailed
 
 class CustomUserSerializer(serializers.ModelSerializer):
     

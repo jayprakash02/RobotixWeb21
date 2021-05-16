@@ -9,6 +9,7 @@ import sys
 from decouple import config
 from datetime import timedelta
 import dj_database_url
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +28,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = os.environ.get('DEBUG', default=False)
 
+
 heroku_config = os.environ.get('heroku_config', default=False)
+
 
 ALLOWED_HOSTS = ['.herokuapp.com']
 ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
@@ -72,6 +75,7 @@ INSTALLED_APPS = [
     # 'roboPortal',
     # 'workshops',
     'recruitment',
+    
 ]
 ## FOR Heroku
 if heroku_config: 
@@ -156,6 +160,9 @@ if heroku_config:
 
 
 
+
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -192,8 +199,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/static/'
-MEDIA_URL = '/static/media/'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 
 if heroku_config:
     STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'staticfiles'))
@@ -269,3 +276,5 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+django_heroku.settings(locals())

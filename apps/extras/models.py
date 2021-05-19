@@ -49,14 +49,6 @@ class web(models.Model):
         return self.name
 
 
-class app(models.Model):
-    img = models.ImageField(upload_to='webteam',default='')
-    name = models.CharField(max_length=200)
-    branch = models.CharField(max_length=50)
-    linkedin = models.URLField()
-    email = models.EmailField()
-    phone = models.CharField(max_length=13)
-
-    def __str__(self):
-        return self.name
-
+class Emails(models.Model):
+    email = models.EmailField(max_length=254)
+    verified = models.BooleanField(default=False)

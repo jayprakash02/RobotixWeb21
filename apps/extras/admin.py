@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from .models import FYI,DIY,sponsors, web ,app
+from .models import Emails, FYI,DIY,sponsors, web ,app, Emails
 
 
 # Register your models here.
@@ -18,4 +18,8 @@ class DIYAdmin(ImportExportModelAdmin):
 
 @admin.register(sponsors)
 class sponsorsAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(Emails)
+class emailsAdmin(ImportExportModelAdmin):
     pass

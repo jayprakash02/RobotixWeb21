@@ -32,7 +32,7 @@ DEBUG = os.environ.get('DEBUG', default=False)
 heroku_config = os.environ.get('heroku_config', default=False)
 
 
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = ['.herokuapp.com','.ngrok.io']
 ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
 if ALLOWED_HOSTS_ENV:
     ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(','))

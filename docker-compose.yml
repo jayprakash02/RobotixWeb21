@@ -9,8 +9,7 @@ services:
         volumes:
             - .:/app/backend/
         command: >
-            sh -c "python manage.py migrate && 
-            python manage.py runserver 0.0.0.0:8000"
+            sh -c "gunicorn RobotixWeb.wsgi.production --bind 0.0.0.0:8000 --workers 2 --threads 4"
         env_file:
             - ./docker/docker.app.env
         depends_on:
@@ -22,34 +21,34 @@ services:
         env_file:
             - ./docker/docker.db.env
 
-    redis:
-        image: redis:alpine
-    celery_beat:
-        build:
-            context: .
-        restart: on-failure
-        volumes:
-            - .:/app/backend/
-        command: celery -A RobotixWeb beat -l info 
-        env_file:
-            - ./docker/docker.app.env
-        depends_on:
-            - db
-            - redis
-            - app
+    # redis:
+    #     image: redis:alpine
+    # celery_beat:
+    #     build:
+    #         context: .
+    #     restart: on-failure
+    #     volumes:
+    #         - .:/app/backend/
+    #     command: celery -A RobotixWeb beat -l info 
+    #     env_file:
+    #         - ./docker/docker.app.env
+    #     depends_on:
+    #         - db
+    #         - redis
+    #         - app
 
-    celery_worker:
-        build:
-            context: .
-        restart: always
-        command: celery -A RobotixWeb worker -l info
-        volumes:
-            - .:/app/backend/
-        env_file:
-            - ./docker/docker.app.env
-        depends_on:
-            - db
-            - redis
-            - app
+    # celery_worker:
+    #     build:
+    #         context: .
+    #     restart: always
+    #     command: celery -A RobotixWeb worker -l info
+    #     volumes:
+    #         - .:/app/backend/
+    #     env_file:
+    #         - ./docker/docker.app.env
+    #     depends_on:
+    #         - db
+    #         - redis
+    #         - app
 volumes:
     postgres_data:

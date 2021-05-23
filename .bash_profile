@@ -1,5 +1,5 @@
 export SECRET_KEY=44de106410288cd81106348ee4f1de93d20dec125f387e0
-export DEBUG=True
+export DEBUG=Flase
 export heroku_config=False
 
 export EMAIL_HOST=smtp.gmail.com

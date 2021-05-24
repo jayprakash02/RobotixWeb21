@@ -17,3 +17,8 @@ docker-compose up
 ```
 docker exec -it <Container ID:robotixweb21_app> python3 manage.py createsuperuser
 ```
+### For Running Normal Django Commands
+```
+source .bash_profile
+python manage.py runserver
+```

@@ -171,3 +171,4 @@ sketch
 # .elasticbeanstalk/*
 # !.elasticbeanstalk/*.cfg.yml
 # !.elasticbeanstalk/*.global.yml
+.bash_profile

@@ -1,14 +1,12 @@
 import dj_database_url
 import django_on_heroku
-from decouple import config
 from .production import *
 
 
 ALLOWED_HOSTS.append('.herokuapp.com')
 
 
-if config('DEBUG'):
-    SECRET_KEY = config('SECRET_KEY')
+if os.environ.get('DEBUG'):
     DEBUG=True
 
 
@@ -27,15 +25,15 @@ WSGI_APPLICATION = 'RobotixWeb.wsgi.application'
 
 
 # Database
-if config('DEBUG'):
+if os.environ.get('DEBUG'):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD' :config('DB_PASSWORD'),
-            'HOST' : config('DB_HOST'),
-            'PORT' : config('DB_PORT')
+            'NAME': os.environ.get('POSTGRES_DB'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'PASSWORD' :os.environ.get('POSTGRES_PASSWORD'),
+            'HOST' : os.environ.get('POSTGRES_HOST'),
+            'PORT' : os.environ.get('POSTGRES_PORT')
         }
     }
 else:

@@ -2,13 +2,12 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-from decouple import config
 
 
 
 def main():
     """Run administrative tasks."""
-    if config('DEBUG') or config('heroku_config'):
+    if os.environ.get('DEBUG') or os.environ.get('heroku_config'):
         os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'RobotixWeb.settings')
     else:
         os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'RobotixWeb.production')

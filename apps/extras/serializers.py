@@ -26,11 +26,42 @@ class FYIViewSet(viewsets.ModelViewSet):
 
 class SponsorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = sponsors
+        model = Sponsors
         fields = '__all__'
 
 
 class SponserViewSet(viewsets.ModelViewSet):
-    queryset = sponsors.objects.all()
+    queryset = Sponsors.objects.all()
     serializer_class = SponsorSerializer
 
+
+class WebSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Web
+        fields = "__all__"
+
+
+class WebViewSet(viewsets.ModelViewSet):
+    queryset = DIY.objects.all()
+    serializer_class = DIYSerializer
+
+
+class GallerySerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Gallery
+        fields = "__all__"
+
+class GalleryViewSet(viewsets.ModelViewSet):
+    queryset = Gallery.objects.all()
+    serializer_class = GallerySerializer
+
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = "__all__"
+
+class ContactViewset(viewsets.ModelViewSet):
+    queryset=Contact.objects.all()
+    serializer_class=ContactSerializer

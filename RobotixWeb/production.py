@@ -59,12 +59,9 @@ INSTALLED_APPS = [
     # apps
     'users',
     "about",
-    'achievements',
     'certificate',
-    'contact',
     'events',
     'extras',
-    'gallery',
     # 'roboexpo',
     # 'roboPortal',
     # 'workshops',

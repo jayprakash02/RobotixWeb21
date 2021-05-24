@@ -105,7 +105,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'RobotixWeb.wsgi.production.application'
+WSGI_APPLICATION = 'RobotixWeb.wsgi.application'
 
 
 CORS_ALLOW_CREDENTIALS = True

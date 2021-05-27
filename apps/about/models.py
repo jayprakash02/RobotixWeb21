@@ -32,6 +32,9 @@ class Team(models.Model):
     phone = models.CharField(max_length=100, blank=True, null=True)
     joining = models.DateField(auto_created=False, blank=True, null=True)
 
+    def __str__(self):
+        return self.name
+
 class Achievements(models.Model):
 
     title = models.CharField(max_length=100)

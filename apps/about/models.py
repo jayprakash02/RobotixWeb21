@@ -6,7 +6,6 @@ POST_CHOICES = (
     ("HC","HeadCoordinator"),
     ("MM","Manager"),
     ("CO","Coordinator"),
-    ("VO","Volunteer"),
 )
 
 DOMAIN_CHOICE = (
@@ -31,6 +30,7 @@ class Team(models.Model):
     email_id = models.EmailField(blank=True, null=True)
     phone = models.CharField(max_length=100, blank=True, null=True)
     joining = models.DateField(auto_created=False, blank=True, null=True)
+    studying_year = models.CharField(max_length=250,null=True)
 
     def __str__(self):
         return self.name

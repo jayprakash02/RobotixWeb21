@@ -1,27 +1,16 @@
 from django.db import models
-
+from django.contrib.postgres.fields import ArrayField
 # Create your models here.
 
-class FYI(models.Model):
-    head = models.CharField(max_length=50,default='')
-    title = models.CharField(max_length=100)
-    link = models.URLField()
-    desc = models.CharField(max_length=1000)
-
-    def __str__(self):
-        return self.head
-
-
-class DIY(models.Model):
+class DIY_FYI(models.Model):
     title = models.CharField(max_length=50)
-    photo = models.ImageField(upload_to='extras/diy/img')
     desc = models.CharField(max_length=1000)
+    image = models.ImageField(upload_to='extras/diy_fyi/img')
     mentor = models.CharField(max_length=50)
-    members = models.CharField(max_length=200)
-    file = models.FileField(upload_to='extras/diy/docs',default='')
+    members = ArrayField(models.CharField(max_length=10, blank=True),size=8)
+    link = models.URLField()
 
     def __str__(self):
-
         return self.title
 
 

@@ -10,12 +10,8 @@ class WebAdmin(ImportExportModelAdmin):
     pass
 
 
-@admin.register(FYI)
-class FYIAdmin(ImportExportModelAdmin):
-    pass
-
-@admin.register(DIY)
-class DIYAdmin(ImportExportModelAdmin):
+@admin.register(DIY_FYI)
+class DIY_FYIAdmin(ImportExportModelAdmin):
     pass
 
 @admin.register(Sponsors)

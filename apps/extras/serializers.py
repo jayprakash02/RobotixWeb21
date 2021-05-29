@@ -2,26 +2,15 @@ from rest_framework import serializers, viewsets
 from .models import *
 
 
-class DIYSerializer(serializers.ModelSerializer):
+class DIY_FYISerializer(serializers.ModelSerializer):
     class Meta:
-        model = DIY
+        model = DIY_FYI
         fields = "__all__"
 
 
-class DIYViewSet(viewsets.ModelViewSet):
-    queryset = DIY.objects.all()
-    serializer_class = DIYSerializer
-
-
-class FYISerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FYI
-        fields = "__all__"
-
-
-class FYIViewSet(viewsets.ModelViewSet):
-    queryset = FYI.objects.all()
-    serializer_class = FYISerializer
+class DIY_FYIViewSet(viewsets.ModelViewSet):
+    queryset = DIY_FYI.objects.all()
+    serializer_class = DIY_FYISerializer
 
 
 class SponsorSerializer(serializers.ModelSerializer):
@@ -42,8 +31,8 @@ class WebSerializer(serializers.ModelSerializer):
 
 
 class WebViewSet(viewsets.ModelViewSet):
-    queryset = DIY.objects.all()
-    serializer_class = DIYSerializer
+    queryset = DIY_FYI.objects.all()
+    serializer_class = DIY_FYISerializer
 
 
 class GallerySerializer(serializers.ModelSerializer):

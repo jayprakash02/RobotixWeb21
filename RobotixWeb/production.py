@@ -248,3 +248,8 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+ADMINS = (
+    # ('Your Name', 'your_email@domain.com'),
+    ('Robot', 'robot@nitrr.ac.in'),
+)

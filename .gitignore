@@ -6,7 +6,6 @@
 .vscode
 ## COllectstatic
 /staticfiles
-/mediafiles
 
 
 ### Django ###

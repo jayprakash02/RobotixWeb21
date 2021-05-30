@@ -15,3 +15,4 @@ class AchievementSerializer(serializers.ModelSerializer):
 class AchievementViewSet(viewsets.ModelViewSet):
     queryset = Achievements.objects.all()
     serializer_class = AchievementSerializer
+    http_method_names = ['get']

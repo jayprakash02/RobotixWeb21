@@ -8,12 +8,6 @@ class DIY_FYISerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class DIY_FYIViewSet(viewsets.ModelViewSet):
-    queryset = DIY_FYI.objects.all()
-    serializer_class = DIY_FYISerializer
-    http_method_names = ['get']
-
-
 class SponsorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sponsors

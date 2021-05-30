@@ -3,12 +3,13 @@ from django.contrib.postgres.fields import ArrayField
 # Create your models here.
 
 class DIY_FYI(models.Model):
-    title = models.CharField(max_length=50)
-    desc = models.CharField(max_length=1000)
-    image = models.ImageField(upload_to='extras/diy_fyi/img')
-    mentor = models.CharField(max_length=50)
-    members = ArrayField(models.CharField(max_length=10, blank=True),size=8)
-    link = models.URLField()
+    title = models.CharField(max_length=50, null= True, blank= True)
+    desc = models.CharField(max_length=1000, null= True, blank= True)
+    image = models.ImageField(upload_to='extras/diy_fyi/img', null= True, blank= True)
+    mentor = models.CharField(max_length=50, null= True, blank= True)
+    members = ArrayField(models.CharField(max_length=10, blank=True),size=8, null= True, blank= True)
+    link = models.URLField(null= True, blank= True)
+    file = models.FileField(upload_to='extras/diy_fyi/docs', null= True, blank= True)
 
     def __str__(self):
         return self.title

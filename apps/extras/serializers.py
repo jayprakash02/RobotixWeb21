@@ -11,6 +11,7 @@ class DIY_FYISerializer(serializers.ModelSerializer):
 class DIY_FYIViewSet(viewsets.ModelViewSet):
     queryset = DIY_FYI.objects.all()
     serializer_class = DIY_FYISerializer
+    http_method_names = ['get']
 
 
 class SponsorSerializer(serializers.ModelSerializer):
@@ -22,6 +23,7 @@ class SponsorSerializer(serializers.ModelSerializer):
 class SponserViewSet(viewsets.ModelViewSet):
     queryset = Sponsors.objects.all()
     serializer_class = SponsorSerializer
+    http_method_names = ['get']
 
 
 class WebSerializer(serializers.ModelSerializer):
@@ -33,6 +35,7 @@ class WebSerializer(serializers.ModelSerializer):
 class WebViewSet(viewsets.ModelViewSet):
     queryset = DIY_FYI.objects.all()
     serializer_class = DIY_FYISerializer
+    http_method_names = ['get']
 
 
 class GallerySerializer(serializers.ModelSerializer):
@@ -44,6 +47,7 @@ class GallerySerializer(serializers.ModelSerializer):
 class GalleryViewSet(viewsets.ModelViewSet):
     queryset = Gallery.objects.all()
     serializer_class = GallerySerializer
+    http_method_names = ['get']
 
 
 class ContactSerializer(serializers.ModelSerializer):
@@ -54,3 +58,4 @@ class ContactSerializer(serializers.ModelSerializer):
 class ContactViewset(viewsets.ModelViewSet):
     queryset=Contact.objects.all()
     serializer_class=ContactSerializer
+    http_method_names = ['get']

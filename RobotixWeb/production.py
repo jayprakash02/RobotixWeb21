@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'phone_field',
     'rest_framework_simplejwt.token_blacklist',
     'drf_yasg',
+    'storages',
 
 
     # apps
@@ -176,12 +177,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/staticfiles/static/'
-MEDIA_URL = '/mediafiles/media/'
 
-
-STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'staticfiles','static'))
-MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'mediafiles','media'))
 
 # drf
 
@@ -253,3 +249,30 @@ ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
     ('Robot', 'robot@nitrr.ac.in'),
 )
+
+#Amazon S3 Bucket settings
+
+USE_S3 = os.environ.get('USE_S3')
+
+if USE_S3:
+    # aws settings
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    AWS_DEFAULT_ACL = None
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # s3 static settings
+    # STATIC_LOCATION = '/staticfiles/static/'
+    # STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+    # STATICFILES_STORAGE = 'RobotixWeb.storage_backends.StaticStorage'
+    # s3 public media settings
+    PUBLIC_MEDIA_LOCATION = '/mediafiles/media/'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+    DEFAULT_FILE_STORAGE = 'RobotixWeb.storage_backends.PublicMediaStorage'
+else:
+    MEDIA_URL = '/mediafiles/media/'
+    MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'mediafiles','media'))
+
+STATIC_URL = '/staticfiles/static/'
+STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'staticfiles','static'))

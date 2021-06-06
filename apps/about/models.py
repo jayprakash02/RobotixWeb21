@@ -1,4 +1,8 @@
 from django.db import models
+from django.utils.deconstruct import deconstructible
+import os
+import datetime as datetime
+from time import strftime
 
 POST_CHOICES = (
     ("AA","Alumini"),
@@ -18,8 +22,23 @@ DOMAIN_CHOICE = (
 )
 # Create your models here.
 
+
+@deconstructible
+class PathAndRename(object):
+    def __init__(self, upload_to):
+        self.upload_to = upload_to
+
+    def __call__(self, instance, filename):
+        ext = filename.split('.')[-1]
+        now_time = datetime.datetime.now().strftime("%Y-%m-%d")
+        filename = '{}.{}'.format(str(instance.name).replace(" ", "_"), ext)
+        return os.path.join(self.upload_to, filename)
+
+
+
 class Team(models.Model):
-    photo = models.ImageField(upload_to='about/team',null=True)
+
+    photo = models.ImageField(upload_to=PathAndRename('about/team/'),null=True)
     name = models.CharField(max_length=250,null=True)
     branch = models.CharField(max_length=250,null=True)
     domain_assign  = models.CharField(choices=DOMAIN_CHOICE,max_length=2,null=True)

@@ -252,7 +252,7 @@ ADMINS = (
 
 #Amazon S3 Bucket settings
 
-USE_S3 = os.environ.get('USE_S3')
+USE_S3 = os.environ.get('USE_S3',default=False)
 
 if USE_S3:
     # aws settings

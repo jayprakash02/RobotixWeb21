@@ -31,14 +31,14 @@ class PathAndRename(object):
     def __call__(self, instance, filename):
         ext = filename.split('.')[-1]
         now_time = datetime.datetime.now().strftime("%Y-%m-%d")
-        filename = '{}.{}'.format(str(instance.name) + '_' + str(now_time), ext)
+        filename = '{}.{}'.format(str(instance.name).replace(" ", "_"), ext)
         return os.path.join(self.upload_to, filename)
 
 
 
 class Team(models.Model):
 
-    photo = models.ImageField(upload_to=PathAndRename('about/'),null=True)
+    photo = models.ImageField(upload_to=PathAndRename('about/team/'),null=True)
     name = models.CharField(max_length=250,null=True)
     branch = models.CharField(max_length=250,null=True)
     domain_assign  = models.CharField(choices=DOMAIN_CHOICE,max_length=2,null=True)

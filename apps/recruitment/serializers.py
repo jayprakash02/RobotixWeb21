@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import QuestionsForRecruitment, FormResponses
+from .models import QuestionsForRecruitment, FormResponses, SubmittedUser
 
 
 
@@ -16,3 +16,8 @@ class FormResponsesSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class SubmittedUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SubmittedUser
+        fields = "__all__"

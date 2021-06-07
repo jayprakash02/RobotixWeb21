@@ -18,6 +18,7 @@ class QuestionsForRecruitment(models.Model):
     ]
 
     CHOICES_DOMAIN = [
+        ('All', 'All'),
         ('Web', 'Web'),
         ('Core', 'Core'),
         ('Design', 'Design'),
@@ -26,13 +27,16 @@ class QuestionsForRecruitment(models.Model):
     ]
 
     question  = models.CharField(max_length=1000)
-    question_id = models.IntegerField(primary_key=True)
+    question_id = models.AutoField(primary_key=True)
     question_type  = models.CharField(max_length=1000, choices=CHOICES_QTYPE)
     question_for_domain  = models.CharField(max_length=1000, choices=CHOICES_DOMAIN)
     option1 = models.CharField(max_length=1000, blank=True)
     option2 = models.CharField(max_length=1000, blank=True)
     option3 = models.CharField(max_length=1000, blank=True)
     option4 = models.CharField(max_length=1000, blank=True)
+
+    def __str__(self):
+        return ' '.join(str(self.question).split(' ')[:4])+ "..."
 
 
 
@@ -44,7 +48,6 @@ class SubmittedUser(models.Model):
     candidate_mobile_number = models.CharField(max_length=10)
     candidate_emailid = models.EmailField()
     candidate_domain_choices = ArrayField(models.CharField(max_length=100, blank=True),size=2)      ## Limiting the choices to only two.
-
 
 
 class FormResponses(models.Model):

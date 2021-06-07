@@ -38,4 +38,6 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            New Backend Image Push to Dockerhub 
+            New Backend Image Push to Dockerhub.
+            Push your changes by clicking here.
+            ${{ secrets.JENKIN_BUILD_URL }}

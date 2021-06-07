@@ -11,16 +11,16 @@ class QuestionsForRecruitmentResource(resources.ModelResource):
 
 ## For Import export in the admin panel
 class QuestionsForRecruitmentAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    # def shorten_ques(self, obj):
-    #     result = QuestionsForRecruitment.objects.filter(question_id=obj)
-    #     shortend = ' '.join(str(result.question).split(' ')[:4])+ "..."
-    #     return shortend['shorten_question']
+    def shorten_ques(self, obj):
+        if obj.question:
+            shortend = ' '.join(str(obj.question).split(' ')[:7])+ "..."
+            return shortend
 
-    # shorten_ques.short_description = "Short Ques"
+    shorten_ques.short_description = "ShortQues"
 
     resource_class = QuestionsForRecruitmentResource
-    # list_display = ['shorten_ques', 'question_id', 'question_type', 'question_for_domain', 'option1', 'option2', 'option3', 'option4']
-    # list_filter = ("question_for_domain",)
+    list_display = ['shorten_ques', 'question_id', 'question_type', 'question_for_domain', 'option1', 'option2', 'option3', 'option4']
+    list_filter = ("question_for_domain",)
 
 admin.site.register(QuestionsForRecruitment,QuestionsForRecruitmentAdmin)
 

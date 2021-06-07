@@ -35,10 +35,6 @@ class QuestionsForRecruitment(models.Model):
     option3 = models.CharField(max_length=1000, blank=True)
     option4 = models.CharField(max_length=1000, blank=True)
 
-    def __str__(self):
-        return ' '.join(str(self.question).split(' ')[:4])+ "..."
-
-
 
 
 ## Every candidates responses 
@@ -59,7 +55,7 @@ class FormResponses(models.Model):
 
 ## Saving the emails and phone numbers to Global level Email and Phone number DB
 # @receiver(post_save,sender=FormResponses)
-# def img_handler(created,instance,*args,**kwargs):
+# def global_email(created,instance,*args,**kwargs):
 #     if created:
 #         ## For Global level Email save
 #         pass

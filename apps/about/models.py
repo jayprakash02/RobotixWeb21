@@ -51,6 +51,9 @@ class Team(models.Model):
     joining = models.DateField(auto_created=False, blank=True, null=True)
     studying_year = models.CharField(max_length=250,null=True)
 
+    class Meta:
+        ordering = ['pk']
+
     def __str__(self):
         return self.name
 

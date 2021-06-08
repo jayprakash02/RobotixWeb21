@@ -1,12 +1,12 @@
 from django.urls import path, include
 from rest_framework import routers
-# from .views import FormResponsesViewset, QuestionsForRecruitmentViewset, FormResponsesAPIView
-from .views import CandidateFormResponsesAPIView, QuestionsForRecruitmentView
+# from .views import FormResponsesViewset, QuestionsViewset, FormResponsesAPIView
+from .views import CandidateFormResponsesAPIView, QuestionsView
 
 
 app_name = 'recruitment'
 
 urlpatterns = [
-    path('questions/', QuestionsForRecruitmentView.as_view()), 
+    path('questions/', QuestionsView.as_view()), 
     path('', CandidateFormResponsesAPIView.as_view())
 ]   

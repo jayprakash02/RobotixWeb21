@@ -3,7 +3,7 @@ from .models import QuestionsForRecruitment, FormResponses, SubmittedUser
 
 
 
-class QuestionsForRecruitmentSerializer(serializers.ModelSerializer):
+class Questions(serializers.ModelSerializer):
     class Meta:
         model = QuestionsForRecruitment
         fields = "__all__"

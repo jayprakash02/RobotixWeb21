@@ -39,7 +39,7 @@ urlpatterns = [
     # path('api/roboexpo/', include('roboexpo.urls'), name="roboexpo"),
     # path('api/roboPortal/', include('roboPortal.urls'), name="roboPortal"),
    #  path('api/workshops/', include('roboPortal.urls'), name="roboPortal"),
-    path('api/recruitment/', include('recruitment.urls'), name="recruitment"),
+   #  path('api/recruitment/', include('recruitment.urls'), name="recruitment"),
 
 
 ]

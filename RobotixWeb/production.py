@@ -66,7 +66,7 @@ INSTALLED_APPS = [
     # 'roboexpo',
     # 'roboPortal',
     # 'workshops',
-    'recruitment',
+    # 'recruitment',
 
 ]
 

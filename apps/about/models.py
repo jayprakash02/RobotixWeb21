@@ -7,7 +7,6 @@ from time import strftime
 POST_CHOICES = (
     ("AA","Alumini"),
     ("CC","Convenor"),
-    ("HC","HeadCoordinator"),
     ("MM","Manager"),
     ("CO","Coordinator"),
 )

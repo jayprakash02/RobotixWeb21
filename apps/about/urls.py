@@ -8,6 +8,7 @@ router = routers.DefaultRouter()
 router.register(r'achievement', AchievementViewSet)
 
 urlpatterns = [
-    path('team/',About.as_view(),name='text'),
+    path('team/',TeamApi.as_view(),name='text'),
+    path('alumini/',Alumini.as_view(),name='text'),
     path('',include(router.urls),name='about_api')
 ]

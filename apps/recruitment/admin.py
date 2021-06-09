@@ -1,16 +1,16 @@
 from django.contrib import admin
-from .models import QuestionsForRecruitment, FormResponses, SubmittedUser
+from .models import Questions, FormResponses, SubmittedUser
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
 
 
 ## Question For Recruitment
-class QuestionsForRecruitmentResource(resources.ModelResource):
+class QuestionsResource(resources.ModelResource):
     class Meta:
-        model = QuestionsForRecruitment
+        model = Questions
 
 ## For Import export in the admin panel
-class QuestionsForRecruitmentAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+class QuestionsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     def shorten_ques(self, obj):
         if obj.question:
             shortend = ' '.join(str(obj.question).split(' ')[:7])+ "..."
@@ -18,11 +18,11 @@ class QuestionsForRecruitmentAdmin(ImportExportModelAdmin, admin.ModelAdmin):
 
     shorten_ques.short_description = "ShortQues"
 
-    resource_class = QuestionsForRecruitmentResource
+    resource_class = QuestionsResource
     list_display = ['shorten_ques', 'question_id', 'question_type', 'question_for_domain', 'option1', 'option2', 'option3', 'option4']
     list_filter = ("question_for_domain",)
 
-admin.site.register(QuestionsForRecruitment,QuestionsForRecruitmentAdmin)
+admin.site.register(Questions,QuestionsAdmin)
 
 
 

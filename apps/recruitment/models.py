@@ -10,22 +10,22 @@ import uuid
 
 ## Questions taken from the domain recruiters and pushed into database of this model.
 ## Both for Form responses and form filling frontend (questions and options) can be taken from here to display.
-class QuestionsForRecruitment(models.Model):
-    CHOICES_QTYPE = [
-        ('SingleChoice', 'SingleChoice'),
-        ('MultipleChoice', 'MultipleChoice'),
-        ('Answer', 'Answer'),
-    ]
+CHOICES_QTYPE = [
+    ('SingleChoice', 'SingleChoice'),
+    ('MultipleChoice', 'MultipleChoice'),
+    ('Answer', 'Answer'),
+]
 
-    CHOICES_DOMAIN = [
-        ('All', 'All'),
-        ('Web', 'Web'),
-        ('Core', 'Core'),
-        ('Design', 'Design'),
-        ('Docs', 'Docs'),
-        ('PR', 'PR'),
-    ]
+CHOICES_DOMAIN = [
+    ('All', 'All'),
+    ('Web', 'Web'),
+    ('Core', 'Core'),
+    ('Design', 'Design'),
+    ('Docs', 'Docs'),
+    ('PR', 'PR'),
+]
 
+class Questions(models.Model):
     question  = models.CharField(max_length=1000)
     question_id = models.AutoField(primary_key=True)
     question_type  = models.CharField(max_length=1000, choices=CHOICES_QTYPE)
@@ -47,10 +47,10 @@ class SubmittedUser(models.Model):
 
 
 class FormResponses(models.Model):
-    question_id = models.ForeignKey('QuestionsForRecruitment', on_delete=models.CASCADE , null=True)
-    submitted_candidate_id = models.ForeignKey('SubmittedUser', on_delete=models.CASCADE, null=True)
+    question_id = models.ForeignKey(Questions, on_delete=models.CASCADE , null=True)
+    submitted_candidate_id = models.ForeignKey(SubmittedUser, on_delete=models.CASCADE, null=True)
     answer_given = models.CharField(max_length=20000, blank=True)
-    options_answer_selected =  ArrayField(models.CharField(max_length=100, blank=True), size=4, null=True, blank=True)
+    options_answer_selected =  ArrayField(models.CharField(max_length=100,choices=CHOICES_DOMAIN, blank=True), size=4, null=True, blank=True)
 
 
 ## Saving the emails and phone numbers to Global level Email and Phone number DB

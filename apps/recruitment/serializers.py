@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from .models import QuestionsForRecruitment, FormResponses, SubmittedUser
+from .models import Questions, FormResponses, SubmittedUser
 
 
 
-class QuestionsForRecruitmentSerializer(serializers.ModelSerializer):
+class QuestionsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = QuestionsForRecruitment
+        model = Questions
         fields = "__all__"
 
 

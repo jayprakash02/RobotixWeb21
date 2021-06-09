@@ -50,7 +50,6 @@ class FormResponses(models.Model):
     question_id = models.ForeignKey(Questions, on_delete=models.CASCADE , null=True)
     submitted_candidate_id = models.ForeignKey(SubmittedUser, on_delete=models.CASCADE, null=True)
     answer_given = models.CharField(max_length=20000, blank=True)
-    options_answer_selected =  ArrayField(models.CharField(max_length=100,choices=CHOICES_DOMAIN, blank=True), size=4, null=True, blank=True)
 
 
 ## Saving the emails and phone numbers to Global level Email and Phone number DB

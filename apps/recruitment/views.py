@@ -15,8 +15,11 @@ class QuestionsView(APIView):
     queryset = Questions.objects.all()
     serializer_class = QuestionsSerializer
     def get(self, request, *args, **kwargs):
+        question_dic = {}
+        question_instance = self.queryset.filter(question_for_domain="All")
+        serializer_ = self.serializer_class(question_instance, many=True)
+        question_dic["All"] = serializer_.data
         if self.request.data.__contains__("Domain"):
-            question_dic = {}
             for i in self.request.data["Domain"]:
                 question_instance = self.queryset.filter(
                     question_for_domain=i)
@@ -24,7 +27,7 @@ class QuestionsView(APIView):
                 question_dic[i]=serializer_.data
             return Response(question_dic, status=status.HTTP_200_OK)
         else:
-            return Response("Choose Your Domain",status=status.HTTP_400_BAD_REQUEST)
+            return Response(question_dic,status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -41,3 +44,6 @@ class CandidateFormResponsesAPIView(APIView):
                           'CandidateResponses': serializer_class2.data}
 
         return Response(candidate_dict)
+
+class ResponseSubmission(APIView):
+    pass

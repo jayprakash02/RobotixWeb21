@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Questions, FormResponses, SubmittedUser
+from .models import Questions, FormResponses, SubmittedUser, Recruitment
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
 
@@ -52,3 +52,4 @@ class FormResponsesAdmin(ImportExportModelAdmin):
     
 
 admin.site.register(FormResponses,FormResponsesAdmin)
+admin.site.register(Recruitment)

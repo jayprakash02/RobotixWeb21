@@ -35,7 +35,17 @@ class Questions(models.Model):
     option3 = models.CharField(max_length=1000, blank=True)
     option4 = models.CharField(max_length=1000, blank=True)
 
+    def __str__(self):
+        return self.question
+    
 
+class Recruitment(models.Model):
+    is_started=models.BooleanField(default=False)
+    start_date=models.DateField()
+    end_date=models.DateField()
+    def __str__(self):
+        return self.is_started
+    
 
 ## Every candidates responses 
 class SubmittedUser(models.Model):
@@ -44,12 +54,15 @@ class SubmittedUser(models.Model):
     candidate_mobile_number = models.CharField(max_length=10)
     candidate_emailid = models.EmailField()
     candidate_domain_choices = ArrayField(models.CharField(max_length=100, blank=True),size=2)      ## Limiting the choices to only two.
-
+    def __str__(self):
+        return self.candidate_name
 
 class FormResponses(models.Model):
     question_id = models.ForeignKey(Questions, on_delete=models.CASCADE , null=True)
     submitted_candidate_id = models.ForeignKey(SubmittedUser, on_delete=models.CASCADE, null=True)
     answer_given = models.CharField(max_length=20000, blank=True)
+    def __str__(self):
+        return self.submitted_candidate_id.candidate_name
 
 
 ## Saving the emails and phone numbers to Global level Email and Phone number DB

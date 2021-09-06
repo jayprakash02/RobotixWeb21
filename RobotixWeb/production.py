@@ -66,7 +66,7 @@ INSTALLED_APPS = [
     # 'roboexpo',
     # 'roboPortal',
     # 'workshops',
-    # 'recruitment',
+    'recruitment',
 
 ]
 
@@ -271,6 +271,7 @@ if USE_S3:
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
     DEFAULT_FILE_STORAGE = 'RobotixWeb.storage_backends.PublicMediaStorage'
 else:
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
     MEDIA_URL = '/mediafiles/media/'
     MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'mediafiles','media'))
 

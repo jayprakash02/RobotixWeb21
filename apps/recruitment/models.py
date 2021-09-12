@@ -44,7 +44,7 @@ class Recruitment(models.Model):
     start_date=models.DateField()
     end_date=models.DateField()
     def __str__(self):
-        return self.is_started
+        return '{0}'.format(self.is_started)
     
 
 ## Every candidates responses 

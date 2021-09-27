@@ -31,7 +31,7 @@ from .models import Questions, FormResponses, Recruitment, SubmittedUser
 
 
 
-class FormResponses(APIView):
+class FormResponsesApi(APIView):
     queryset1 = SubmittedUser.objects.all()
     queryset2 = FormResponses.objects.all()
 
@@ -74,46 +74,46 @@ class FormResponses(APIView):
                 if question["All"]:
                     question_ = question["All"]
                     for q in question_:
-                        question_instance = Questions.objects.filter(q["ID"])
+                        question_instance = Questions.objects.filter(question_id=q["ID"])
                         if question_instance.exists:
-                            candiateResponse = FormResponses.objects.create(question_id=q["ID"],submitted_candidate_id=response_id,answer_given=q["Answer"])
+                            candiateResponse = FormResponses.objects.create(question_id=Questions.objects.get(question_id=q["ID"]),submitted_candidate_id=candidate,answer_given=q["Answer"])
                             candiateResponse.save()
                 if question["Web"]:
                     question_ = question["Web"]
                     for q in question_:
-                        question_instance = Questions.objects.filter(q["ID"])
+                        question_instance = Questions.objects.filter(question_id=q["ID"])
                         if question_instance.exists:
-                            candiateResponse = FormResponses.objects.create(question_id=q["ID"],submitted_candidate_id=response_id,answer_given=q["Answer"])
+                            candiateResponse = FormResponses.objects.create(question_id=Questions.objects.get(question_id=q["ID"]),submitted_candidate_id=candidate,answer_given=q["Answer"])
                             candiateResponse.save()
                 if question["PR"]:
                     question_ = question["PR"]
                     for q in question_:
-                        question_instance = Questions.objects.filter(q["ID"])
+                        question_instance = Questions.objects.filter(question_id=q["ID"])
                         if question_instance.exists:
-                            candiateResponse = FormResponses.objects.create(question_id=q["ID"],submitted_candidate_id=response_id,answer_given=q["Answer"])
+                            candiateResponse = FormResponses.objects.create(question_id=Questions.objects.get(question_id=q["ID"]),submitted_candidate_id=candidate,answer_given=q["Answer"])
                             candiateResponse.save()
                 if question["Design"]:
                     question_ = question["Design"]
                     for q in question_:
-                        question_instance = Questions.objects.filter(q["ID"])
+                        question_instance = Questions.objects.filter(question_id=q["ID"])
                         if question_instance.exists:
-                            candiateResponse = FormResponses.objects.create(question_id=q["ID"],submitted_candidate_id=response_id,answer_given=q["Answer"])
+                            candiateResponse = FormResponses.objects.create(question_id=Questions.objects.get(question_id=q["ID"]),submitted_candidate_id=candidate,answer_given=q["Answer"])
                             candiateResponse.save()
                 if question["Core"]:
                     question_ = question["Core"]
                     for q in question_:
-                        question_instance = Questions.objects.filter(q["ID"])
+                        question_instance = Questions.objects.filter(question_id=q["ID"])
                         if question_instance.exists:
-                            candiateResponse = FormResponses.objects.create(question_id=q["ID"],submitted_candidate_id=response_id,answer_given=q["Answer"])
+                            candiateResponse = FormResponses.objects.create(question_id=Questions.objects.get(question_id=q["ID"]),submitted_candidate_id=candidate,answer_given=q["Answer"])
                             candiateResponse.save()
                 if question["Docs"]:
                     question_ = question["Docs"]
                     for q in question_:
-                        question_instance = Questions.objects.filter(q["ID"])
+                        question_instance = Questions.objects.filter(question_id=q["ID"])
                         if question_instance.exists:
-                            candiateResponse = FormResponses.objects.create(question_id=q["ID"],submitted_candidate_id=response_id,answer_given=q["Answer"])
+                            candiateResponse = FormResponses.objects.create(question_id=Questions.objects.get(question_id=q["ID"]),submitted_candidate_id=candidate,answer_given=q["Answer"])
                             candiateResponse.save()
 
                 return Response(self.request.data["Question"]["All"][0]["ID"])
-            return Response(self.request.data["Questions"],status=status.HTTP_400_BAD_REQUEST)
+            return Response(self.request.data["Question"],status=status.HTTP_400_BAD_REQUEST)
         return Response('Recruitment Not Started',status=status.HTTP_406_NOT_ACCEPTABLE)

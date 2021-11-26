@@ -44,7 +44,7 @@ class Alumini(APIView):
 
 class VerifyEmail(APIView):
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         if request.data.__contains__('email'):
             email_add =request.data['email']
             otp = ''.join(secrets.choice(string.ascii_uppercase + string.digits) for i in range(6))

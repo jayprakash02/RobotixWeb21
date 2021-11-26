@@ -23,7 +23,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # DEBUG = bool(int(os.environ.get('DEBUG',0)))
 
-DEBUG = os.environ.get('DEBUG', default=False)
+DEBUG = os.environ.get('DEBUG')
 
 
 ALLOWED_HOSTS = ['.ngrok.io']
@@ -45,7 +45,6 @@ INSTALLED_APPS = [
 
     # pips
     'corsheaders',
-    'django.contrib.sites',
     'rest_framework',
     'rest_framework.authtoken',
     'import_export',
